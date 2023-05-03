@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <title>ASK IT</title>
+</head>
+
+<body>
+    <div class="auth-form-wrapper">
+        <form method="post" class="auth-form">
+            <p>ASK IT</p>
+            {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+            <div class="alert alert-error">
+                <strong>Error!</strong> {{error}}
+            </div>
+            {% endfor %}
+            {% endfor %}
+
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-error">
+                <strong>Error!</strong> {{message}}
+            </div>
+            {% endfor %}
+
+            {{ form.csrf_token }}
+            {{ form.identifier(class='br-400 auth-form-input bg-neutral-100') }}
+            {{ form.password(class='br-400 auth-form-input bg-neutral-100') }}
+            {{ form.submit(class='br-400 auth-form-input bg-primary-400 text-secondary-100 ') }}
+        </form>
+    </div>
+</body>
+
+</html>

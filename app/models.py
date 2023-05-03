@@ -1,22 +1,22 @@
-
 from . import db
+from flask_login import UserMixin
 #could use faker to gen fake data
 
 UserSubject = db.Table("UserSubject",
-  db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+  db.Column('user_id', db.Integer, db.ForeignKey('User.id'), primary_key=True),
     db.Column('subject_id', db.Integer, db.ForeignKey('subject.id'), primary_key=True)
 )
 
 Save = db.Table("Save",
   db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    db.Column('user_id', db.Integer, db.ForeignKey('User.id'), primary_key=True)
 )
 
 #association object
 class Vote(db.Model):
     __tablename__ ="Vote"
     
-    user_id= db.Column( db.Integer, db.ForeignKey('user.id'))
+    user_id= db.Column( db.Integer, db.ForeignKey('User.id'))
     response_id=db.Column( db.Integer, db.ForeignKey('response.id'))
     state = db.Column(db.Boolean, nullable=False)
     db.PrimaryKeyConstraint(user_id, response_id)
@@ -29,8 +29,8 @@ class Vote(db.Model):
 
 
 # User table database model
-class User(db.Model):
-    __tablename__ = "user"
+class User(db.Model, UserMixin):
+    __tablename__ = "User"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
@@ -52,7 +52,7 @@ class Subject(db.Model):
 class Question(db.Model):
     __tablename__ = "question"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer,db.ForeignKey('User.id'))
     subject_id =db.Column(db.Integer,db.ForeignKey('subject.id'))
     title = db.Column(db.String(),nullable=False)
     date_posted = db.Column(db.DateTime,nullable=False)
@@ -66,7 +66,7 @@ class Question(db.Model):
 class Response(db.Model):
     __tablename__ = "response"
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer,db.ForeignKey('User.id'))
     question_id =db.Column(db.Integer,db.ForeignKey('question.id'))
     date_posted = db.Column(db.DateTime,nullable=False)
     body = db.Column(db.String(),nullable=False)

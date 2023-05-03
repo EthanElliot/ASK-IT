@@ -253,3 +253,26 @@ button:hover {
   border-radius: 5px;
   margin-bottom: 10px;
 }
+
+.auth-form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-form {
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form-input {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  flex-direction: row;
+  border: 1px solid var(--clr-neutral-700);
+  height: 50px;
+  margin-bottom: 10px;
+}
