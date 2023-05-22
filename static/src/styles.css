@@ -1,0 +1,10 @@
+@tailwind base;
+
+@layer base {
+  .my-custom-class {
+    @apply p-5 static;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;
