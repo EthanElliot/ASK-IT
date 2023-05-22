@@ -1,4 +1,4 @@
-from .app import db
+from app import db
 from flask_login import UserMixin
 #could use faker to gen fake data
 

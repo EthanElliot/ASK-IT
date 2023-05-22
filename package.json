@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "tailwind": "npx tailwindcss -i ./app/static/src/styles.css -o ./app/static/dist/css/output.css --watch"
+    "tailwind": "npx tailwindcss -i ./static/src/styles.css -o ./static/dist/css/output.css --watch"
   },
   "repository": {
     "type": "git",
