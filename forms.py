@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,EmailField,PasswordField,SubmitField,ValidationError
 from wtforms.validators import DataRequired, Length, EqualTo
-from .models import User
+from models import User
 
 
 #alphabet validator
@@ -29,7 +29,6 @@ def email_taken(form, field):
         user = User.query.filter((User.email == str(field.data))).first()
         if user:
             raise ValidationError('email already taken')
-
 
 
 #form classea

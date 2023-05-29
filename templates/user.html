@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-1">
+    <div>
+        USERS POSTS
+        {{user.questions}}
+    </div>
+    <div class=" bg-neutral-100">
+        {% if user.img%}
+        {% else %}
+        <img class="w-full aspect-square" src="{{ url_for('static', filename='default_profile.svg') }}" />
+        {% endif%}
+        <div class="p-2 ">
+
+            <p class="font-medium text-xl mb-2">{{user.username}}</p>
+
+            <div class="border-b-2 h-0"></div>
+            <div class="flex m-2">
+                <div class="w-1/2 flex flex-col items-center">
+                    <p class="text-neutral-300">Questions</p>
+                    <p>{{user.questions| length }}</p>
+                </div>
+                <div class="w-1/2 flex flex-col items-center">
+                    <p class="text-neutral-300">Responces</p>
+                    <p>{{user.responses| length }}</p>
+                </div>
+            </div>
+            <div class="border-b-2 h-0 mb-4"></div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,6 +1,5 @@
-from app import db
+from extentions import db
 from flask_login import UserMixin
-#could use faker to gen fake data
 
 UserSubject = db.Table("UserSubject",
   db.Column('user_id', db.Integer, db.ForeignKey('User.id'), primary_key=True),

@@ -40,19 +40,19 @@
             <div>
                 <ul class="w-full">
                     <li class="w-full hover:bg-white ">
-                        <a class="w-full flex p-2 my-1 flex-1 align-middle  " href="">
+                        <a class="w-full flex p-2 my-1 flex-1 align-middle  " href="/">
                             <span class="material-symbols-outlined">home</span>
                             <p class="m-auto">Home</p>
                         </a>
                     </li>
                     <li class="w-full hover:bg-white">
-                        <a class="w-full flex p-2 my-1 align-middle flex-1" href="">
+                        <a class="w-full flex p-2 my-1 align-middle flex-1" href="/u/{{current_user.id}}">
                             <span class="material-symbols-outlined">person</span>
                             <p class="m-auto">Account</p>
                         </a>
                     </li>
                     <li class="w-full hover:bg-white">
-                        <a class="w-full flex p-2 my-1 flex-1 align-middle " href="">
+                        <a class="w-full flex p-2 my-1 flex-1 align-middle " href="/">
                             <span class="material-symbols-outlined">post_add</span>
                             <p class="m-auto">Ask</p>
                         </a>
@@ -108,7 +108,7 @@
                 </button>
             </div>
 
-            <div class="h-auto">
+            <div class="h-auto w-auto max-w-7xl mx-auto">
                 {% block content %}
                 {% endblock %}
             </div>
