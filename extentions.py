@@ -16,5 +16,3 @@ def load_user(user_id):
 
 login_manager.login_view = 'auth.signin'
 
-from forms import *
-

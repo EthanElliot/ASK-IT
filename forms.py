@@ -1,7 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,EmailField,PasswordField,SubmitField,ValidationError
+from wtforms import StringField,EmailField,PasswordField,SubmitField,ValidationError, SelectField,HiddenField,FileField
 from wtforms.validators import DataRequired, Length, EqualTo
-from models import User
+from models import Subject, User
+from extentions import db
+import logging
+logging.basicConfig()
+logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+
 
 
 #alphabet validator
@@ -18,6 +23,7 @@ def username_taken(form, field):
         return
     else: 
         user = User.query.filter((User.username == field.data)).first()
+        
         if user:
             raise ValidationError('username already taken')
 
@@ -90,3 +96,15 @@ class SignInForm(FlaskForm):
         render_kw={"placeholder": "Password"})
     
     submit = SubmitField('sign in')
+
+class AskForm(FlaskForm):
+    title = StringField('title', 
+    validators=[
+        DataRequired(message='post must have a title'),
+        Length(min=4, max=100)],)
+    #must select validator
+    subject = SelectField(choices=[])
+    #min lenth validator
+    body= HiddenField('content')
+    attachment = FileField('attachment')
+    submit = SubmitField("ask!")
