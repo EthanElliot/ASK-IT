@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Length, EqualTo
 from models import Subject, User
 from extentions import db
 import logging
+import html2text
 logging.basicConfig()
 logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
@@ -35,7 +36,6 @@ def email_taken(form, field):
         user = User.query.filter((User.email == str(field.data))).first()
         if user:
             raise ValidationError('email already taken')
-
 
 #form classea
 class SignUpForm(FlaskForm):
@@ -97,14 +97,22 @@ class SignInForm(FlaskForm):
     
     submit = SubmitField('sign in')
 
+#add must select validator
 class AskForm(FlaskForm):
     title = StringField('title', 
     validators=[
         DataRequired(message='post must have a title'),
         Length(min=4, max=100)],)
-    #must select validator
     subject = SelectField(choices=[])
-    #min lenth validator
-    body= HiddenField('content')
-    attachment = FileField('attachment')
+
+    body= HiddenField('body', validators=[])
     submit = SubmitField("ask!")
+    #min lenth validator
+    def validate_body(self, body):
+        text = len(html2text.html2text(body.data))
+        if text < 50:
+            raise ValidationError('body of question too short')    
+
+        if text > 2000:
+            raise ValidationError('body of question too long')
+

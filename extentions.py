@@ -14,5 +14,5 @@ def load_user(user_id):
     from models import User
     return User.query.get(int(user_id))
 
-login_manager.login_view = 'auth.signin'
+login_manager.login_view = 'signin'
 

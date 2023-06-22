@@ -57,7 +57,7 @@
                         </a>
                     </li>
                     <li class="w-full hover:bg-white">
-                        <a class="w-full flex p-2 my-1 flex-1 align-middle " href="/">
+                        <a class="w-full flex p-2 my-1 flex-1 align-middle " href="/ask">
                             <span class="material-symbols-outlined">post_add</span>
                             <p class="m-auto">Ask</p>
                         </a>
@@ -115,7 +115,7 @@
                     <input type="text" name="" id="" class="w-full h-full pl-10 focus:outline-0 ">
                 </form>
                 {% if current_user.is_authenticated %}
-                <button class="border-r-2 flex justify-center items-center">
+                <button class="border-r-2 flex justify-center items-center" onclick="location.href='/ask'">
                     <span class="material-symbols-outlined">add</span>
                 </button>
                 <button id="user_dropdown_btn" class="w-auto flex items-center mx-2" onclick="Dropdown_Function()">
@@ -137,7 +137,7 @@
 
                         <div class="mx-2 border-b-2 h-0"></div>
                         <li class="hover:bg-white">
-                            <a class="w-full flex p-2 my-2 align-middle flex-1" href="/">
+                            <a class="w-full flex p-2 my-2 align-middle flex-1" href="/ask">
                                 <span class="material-symbols-outlined">post_add</span>
                                 <p class="m-auto">Ask</p>
                             </a>
