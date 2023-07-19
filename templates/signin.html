@@ -5,31 +5,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dist/css/output.css') }}">
     <title>ASK IT</title>
 </head>
 
-<body>
-    <form method="post">
-        <p>ASK IT</p>
-        {% for field in form.errors %}
-        {% for error in form.errors[field] %}
-        <div class="alert alert-error">
-            <strong>Error!</strong> {{error}}
-        </div>
-        {% endfor %}
-        {% endfor %}
 
-        {% for message in get_flashed_messages() %}
-        <div class="alert alert-error">
-            <strong>Error!</strong> {{message}}
-        </div>
-        {% endfor %}
+<body class="bg-neutral-100">
+    <form method="post" class="w-1/2 max-w-md h-screen mx-auto border-x-2">
+        <div class="flex flex-col p-2 h-full bg-white justify-center">
+            <div class="absolute top-2 w-1/2 max-w-md translate-x-[-10px]">
+                <img src="{{ url_for('static', filename='Brand_Assets/LOGO.png') }}"
+                    class="w-8 my-auto h-8 mx-auto object-cover cursor-pointer" onclick="location.href='/'">
+            </div>
 
-        {{ form.csrf_token }}
-        {{ form.identifier(class='br-400 auth-form-input bg-neutral-100') }}
-        {{ form.password(class='br-400 auth-form-input bg-neutral-100') }}
-        {{ form.submit(class='br-400 auth-form-input bg-primary-400 text-secondary-100 ') }}
+            <p class=" text-2xl tracking-wide text-black font-bold mb-4">SIGN IN</p>
+
+            {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+            <div class="my-2">
+                <strong>Error!</strong> {{error}}
+            </div>
+            {% endfor %}
+            {% endfor %}
+
+            {% for message in get_flashed_messages() %}
+            <div class="my-2">
+                <strong>Error!</strong> {{message}}
+            </div>
+            {% endfor %}
+            <div class="flex flex-col ">
+                {{ form.csrf_token }}
+                {{ form.identifier(class='br-400 bg-neutral-100 p-2 mb-2') }}
+                {{ form.password(class='br-400 bg-neutral-100 p-2 mb-4') }}
+                {{ form.submit(class='br-400 bg-primary-400 text-secondary-100 p-2 bg-blue-950
+                text-white
+                font-semibold cursor-pointer') }}
+            </div>
+            <p class="text-gray-400 mt-4 text-center">New to Askit? <a href="/signup"
+                    class="underline text-blue-600 hover:text-blue-800 "> sign up</a> </p>
+        </div>
+
     </form>
 </body>
 
