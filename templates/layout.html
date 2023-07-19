@@ -115,16 +115,22 @@
                     <input type="text" name="" id="" class="w-full h-full pl-10 focus:outline-0 ">
                 </form>
                 {% if current_user.is_authenticated %}
-                <button class="border-r-2 flex justify-center items-center" onclick="location.href='/ask'">
+                <button class=" w-full h-full bg-white border-r-2 flex justify-center items-center"
+                    onclick="location.href='/ask'">
                     <span class="material-symbols-outlined">add</span>
                 </button>
-                <button id="user_dropdown_btn" class="w-auto flex items-center mx-2" onclick="Dropdown_Function()">
-                    <img class="rounded-full w-8 mr-2" src="{{ url_for('static', filename='default_profile.svg') }}">
-                    </img>
-                    <p class=" text-black">{{current_user.username}}</p>
-                    <span class="material-symbols-sharp ml-auto">
-                        arrow_drop_down
-                    </span>
+                <button id="user_dropdown_btn" class=" w-full h-full bg-white px-2  z-10 "
+                    onclick="Dropdown_Function()">
+                    <div id="user_dropdown_btn" class="flex items-center -z-0">
+                        <img id="user_dropdown_btn" class="rounded-full w-8 mr-2"
+                            src="{{ url_for('static', filename='default_profile.svg') }}">
+                        </img>
+                        <p id="user_dropdown_btn" class=" text-black">{{current_user.username}}</p>
+                        <span id="user_dropdown_btn" class="material-symbols-sharp ml-auto">
+                            arrow_drop_down
+                        </span>
+                    </div>
+
                 </button>
                 <!-- USER DROPDOWN -->
                 <div id="User_dropdown"
@@ -161,7 +167,8 @@
                 </div>
                 {%else%}
 
-                <button class="flex items-center justify-center" onclick="location.href='/signin'">
+                <button class="w-full h-full flex items-center justify-center bg-white "
+                    onclick="location.href='/signin'">
                     <span class="material-symbols-outlined mr-2">
                         login
                     </span>
@@ -197,6 +204,7 @@
 
     // Close the dropdown if the user clicks outside of it
     $(document).click(function (e) {
+        console.log(e.target)
         if (!e.target.matches('#user_dropdown_btn')) {
             $("#User_dropdown").addClass('hidden');
         }
