@@ -2,3 +2,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* quill editor */
+.ql-container {
+  @apply bg-neutral-100 border-none p-0 !important;
+}
+
+.ql-editor {
+  @apply p-2 h-[40vh] overflow-y-scroll text-base !important;
+}
+.ql-editor::-webkit-scrollbar {
+  display: none;
+}
+
+.ql-toolbar {
+  @apply bg-neutral-100 border-none  relative p-2 !important;
+}
+
+.ql-toolbar:before {
+  @apply content-[""] absolute left-2 right-2 bottom-0 h-2 w-auto border-b-2 border-[#e5e7eb] !important;
+}
+
+.ql-formats:first-child button {
+  @apply pl-0 !important;
+}
+
+.ql-editor.ql-blank::before {
+  @apply p-0 left-2 right-0 text-gray-400 not-italic text-base !important;
+}
+
+.ql-editor p {
+  @apply text-base !important;
+}

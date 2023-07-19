@@ -102,12 +102,27 @@ class AskForm(FlaskForm):
     title = StringField('title', 
     validators=[
         DataRequired(message='post must have a title'),
-        Length(min=4, max=100)],)
+        Length(min=15, max=100)], render_kw={"placeholder": "e.g. what is 1+1?"})
     subject = SelectField(choices=[])
 
     body= HiddenField('body', validators=[])
-    submit = SubmitField("ask!")
+    submit = SubmitField("Ask")
     #min lenth validator
+    def validate_body(self, body):
+        text = len(html2text.html2text(body.data))
+        if text < 40:
+            raise ValidationError('body of question is too short')    
+
+        if text > 2000:
+            raise ValidationError('body of question is too long')
+
+
+class ResponceForm(FlaskForm):
+    #min lenth validator
+    body= HiddenField('body', validators=[])
+    parent=HiddenField('parent_id')
+    submit = SubmitField("submit")
+    
     def validate_body(self, body):
         text = len(html2text.html2text(body.data))
         if text < 50:

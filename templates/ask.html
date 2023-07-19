@@ -6,6 +6,9 @@
 
 
 <form id="form" method="post" class="flex flex-col mx-2 mt-2 ">
+    <p class=" text-2xl tracking-wide text-black font-bold mb-4">NEW QUESTION</p>
+
+
     {% for field in form.errors %}
     {% for error in form.errors[field] %}
     <div class="alert alert-error">
@@ -20,15 +23,29 @@
     </div>
     {% endfor %}
 
-    {{ form.csrf_token }}
 
-    {{form.title(class_="")}}
-    {{form.subject}}
+
+
+
+    {{ form.csrf_token }}
+    <p class="text-gray-400 "> <span class="text-black">Title.</span> Give your post a title; a brief descrition of
+        theproblem you have.</p>
+    {{form.title(class_="br-400 bg-neutral-100 p-2 mb-4 ")}}
+    <p class="text-gray-400"> <span class="text-black">Subject.</span> Select the subject that best relate to you're
+        question.</p>
+    {{form.subject(class_="br-400 bg-neutral-100 p-2 mb-4")}}
     {{form.body}}
 
-    <div id="body_input"></div>
+    <p class="text-gray-400"> <span class="text-black">Body.</span> Introduce the problem and expand on the title,
+        describe what you have tried. Minimum 40 charaters.</p>
+    <div id="body_input" class=""></div>
 
-    {{form.submit}}
+
+    <p class="text-gray-400 mt-4"> <span class="text-black">Post.</span> Check that you have gotten your point across;
+        then you can post and get the answers you want.</p>
+    {{form.submit(class_="br-400 bg-primary-400 text-secondary-100 p-2 bg-blue-950 w-1/4
+    text-white
+    font-semibold cursor-pointer")}}
 </form>
 
 

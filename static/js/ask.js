@@ -21,6 +21,7 @@ var quill = new Quill("#body_input", {
       ["clean"],
     ],
   },
+  placeholder: "e.g. I was trying to...",
   theme: "snow",
   formats: formats,
 });

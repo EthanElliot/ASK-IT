@@ -15,13 +15,38 @@
         <hr>
         <div>
             <p>Responces</p>
-            {{question.Responces}}
-            <!-- make locked if not log in -->
+            <ul>
+                {{Responces}}
+            </ul>
+
+
+
+
+
+
+
+
+            {% if form %}
             <p>Add to this discusion</p>
             <form id="form" method="post">
-                <div id="body_input"></div>
+                <!-- make locked if not log in -->
 
+                {% for field in form.errors %}
+                {% for error in form.errors[field] %}
+                <div class="alert alert-error">
+                    <strong>Error!</strong> {{error}}
+                </div>
+                {% endfor %}
+                {% endfor %}
+
+
+                {{ form.csrf_token }}
+                {{form.parent}}
+                {{form.body}}
+                <div id="body_input"></div>
+                {{form.submit}}
             </form>
+            {%endif%}
 
         </div>
     </div>
