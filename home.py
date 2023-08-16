@@ -145,8 +145,30 @@ def get_responses(question_id):
 
 
 
-@api.route('/v/<int:response_id>/<int:state>', methods=['POST'])
+@api.route('/v/<int:response_id>', methods=['POST'])
 @login_required
-def handle_response(response,state):
-    print(response)
-    print(state)
+def handle_response(response_id):
+    request_data = json.loads(request.data)
+    print(request_data)
+
+    vote = Vote.query.filter(Vote.user_id==current_user.id, Vote.response_id==response_id).first()
+    
+    print(vote)
+    if not vote:
+        new_vote=Vote(user_id=current_user.id,response_id=response_id, state=request_data)
+        db.session.add(new_vote)
+        db.session.commit()
+    elif vote and vote.state == request_data:
+        db.session.delete(vote)
+        db.session.commit()
+    elif vote and vote.state != request_data:
+        if vote.state == 0:
+            vote.state = 1
+        elif vote.state == 1:
+            vote.state = 0
+        db.session.commit()
+        
+
+    response = make_response(jsonify(success=True),200)
+    response.headers["Content-Type"] = "application/json"
+    return response

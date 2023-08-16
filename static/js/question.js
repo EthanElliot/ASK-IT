@@ -39,9 +39,9 @@ form.on("submit", function () {
 //
 //
 
-async function request_responses(response_id, parent_id) {
+async function request_responses(question_id, parent_id) {
   console.log(parent_id);
-  let response = await fetch(`/r/${response_id}`, {
+  let response = await fetch(`/r/${question_id}`, {
     method: "POST",
     body: JSON.stringify({
       parent_id: parent_id,
@@ -54,8 +54,8 @@ const template = document.querySelector("#question_reply_template");
 
 const responses_body = document.querySelector("#question_replies");
 
-function format_responses(response_id, parent_id) {
-  response = request_responses(response_id, parent_id).then((data) => {
+function format_responses(question_id, parent_id) {
+  response = request_responses(question_id, parent_id).then((data) => {
     data.forEach((response) => {
       // clone the template
       const clone = template.content.cloneNode(true);
@@ -91,6 +91,17 @@ function format_responses(response_id, parent_id) {
         response.body;
 
       clone
+        .querySelector("#question_reply_template_upvote")
+        .addEventListener("click", function () {
+          update_vote(response.id, 1);
+        });
+      clone
+        .querySelector("#question_reply_template_downvote")
+        .addEventListener("click", function () {
+          update_vote(response.id, 0);
+        });
+
+      clone
         .querySelector("#question_reply_template_reply")
         .setAttribute("href", "#form");
       clone
@@ -104,5 +115,20 @@ function format_responses(response_id, parent_id) {
       //append template
       responses_body.appendChild(clone);
     });
+  });
+}
+
+function update_vote(response_id, vote_state) {
+  return fetch(`/v/${response_id}`, {
+    method: "POST", // Use 'POST' for sending data
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(vote_state),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+    return response.json();
   });
 }
