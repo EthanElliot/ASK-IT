@@ -14,7 +14,7 @@ Save = db.Table("Save",
 #association object
 class Vote(db.Model):
     __tablename__ ="Vote"
-    
+
     user_id= db.Column( db.Integer, db.ForeignKey('User.id'))
     response_id=db.Column( db.Integer, db.ForeignKey('response.id'))
     state = db.Column(db.Boolean, nullable=False)
@@ -57,7 +57,7 @@ class Question(db.Model):
     date_posted = db.Column(db.DateTime,nullable=False)
     body = db.Column(db.String(),nullable=False)
     views = db.Column(db.Integer())
-
+    
     user = db.relationship('User', backref='questions')
     subject =db.relationship('Subject', backref='questions')
 
@@ -70,9 +70,7 @@ class Response(db.Model):
     date_posted = db.Column(db.DateTime,nullable=False)
     body = db.Column(db.String(),nullable=False)
     parent_id = db.Column(db.Integer, db.ForeignKey('response.id'))
-    
 
     user= db.relationship('User', backref='responses')
     question=db.relationship('Question', backref='responses')
-    replies = db.relationship('Response', backref=db.backref('parent', remote_side=[id]),lazy='dynamic')
-  
+    replies = db.relationship('Response', backref=db.backref('parent', remote_side=[id]),lazy='joined')

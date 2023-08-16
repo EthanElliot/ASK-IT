@@ -34,3 +34,15 @@
 .ql-editor p {
   @apply text-base !important;
 }
+
+/* style for question page body children */
+.question_body a {
+  @apply underline text-blue-600 hover:text-blue-800;
+}
+
+.question_body ol {
+  @apply list-decimal list-inside;
+}
+.question_body ul {
+  @apply list-disc list-inside;
+}

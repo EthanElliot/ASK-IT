@@ -5,8 +5,8 @@ from models import Subject, User
 from extentions import db
 import logging
 import html2text
-logging.basicConfig()
-logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
+# logging.basicConfig()
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
 
@@ -120,14 +120,14 @@ class AskForm(FlaskForm):
 class ResponceForm(FlaskForm):
     #min lenth validator
     body= HiddenField('body', validators=[])
-    parent=HiddenField('parent_id')
+    parent=HiddenField('parent')
     submit = SubmitField("submit")
     
     def validate_body(self, body):
         text = len(html2text.html2text(body.data))
-        if text < 50:
+        if text < 20:
             raise ValidationError('body of question too short')    
 
-        if text > 2000:
+        if text > 1000:
             raise ValidationError('body of question too long')
 

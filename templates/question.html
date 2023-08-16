@@ -8,49 +8,97 @@
 
 <div class="flex flex-col mx-2 mt-2 ">
     <div>
-        <p>{{question.title}}</p>
-        <div class="">
-            {{body|safe}}
+        <div class="mb-4 border-b-2">
+            <p class="text-2xl tracking-wide text-black font-bold mb-4">{{question.title}}</p>
+            <p>{{question.subject.name}}</p>
+            <a class="underline text-blue-600 hover:text-blue-800"
+                href="/u/{{question.user.id}}">@{{question.user.username}} </a>
+            <p class="text-gray-400 mb-2">{{question.date_posted.strftime('%d%/%m/%Y ')}}
+                {{question.date_posted.strftime('%H:%M')}}
+            </p>
+            <p>
+                <span class="material-symbols-outlined">
+                    visibility
+                </span>{{question.views}}
+            </p>
+            <p><span class="material-symbols-outlined">
+                    mode_comment
+                </span>{{question.responses|length}}
+
+            </p>
+            <p> <span class="material-symbols-outlined">
+                    favorite
+                </span> {{question.users_saved|length}} {{liked_by_user}}
+            </p>
+
+        </div>
+        <div class="question_body border-b-2 pb-2" id="question_body"></div>
+    </div>
+
+
+    <!-- replies  -->
+    <div id='question_replies'></div>
+
+    <template id="question_reply_template">
+        <div>
+            <a id='question_reply_template_user' class="underline text-blue-600 hover:text-blue-800"></a>
+            <p id='question_reply_template_date'></p>
+
+            <p id='question_reply_template_votes'> </p>
+            <p id="question_reply_template_voteby"></p>
+
+            <p id='question_reply_template_body'></p>
+            <a href="" id="question_reply_template_reply">add a reply</a>
         </div>
         <hr>
-        <div>
-            <p>Responces</p>
-            <ul>
-                {{Responces}}
-            </ul>
+    </template>
 
 
 
+    {%if current_user.is_authenticated%}
 
-
-
-
-
-            {% if form %}
-            <p>Add to this discusion</p>
-            <form id="form" method="post">
-                <!-- make locked if not log in -->
-
-                {% for field in form.errors %}
-                {% for error in form.errors[field] %}
-                <div class="alert alert-error">
-                    <strong>Error!</strong> {{error}}
-                </div>
-                {% endfor %}
-                {% endfor %}
-
-
-                {{ form.csrf_token }}
-                {{form.parent}}
-                {{form.body}}
-                <div id="body_input"></div>
-                {{form.submit}}
-            </form>
-            {%endif%}
-
+    <form id="form" method="post" class="flex flex-col mx-2 mt-2 ">
+        <p>got somthing to add? add a reply</p>
+        <p id="form_replying_to"></p>
+        {% for field in form.errors %}
+        {% for error in form.errors[field] %}
+        <div class="alert alert-error">
+            <strong>Error!</strong> {{error}}
         </div>
-    </div>
+        {% endfor %}
+        {% endfor %}
+
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-error">
+            <strong>Error!</strong> {{message}}
+        </div>
+        {% endfor %}
+
+
+
+
+
+        {{ form.csrf_token }}
+        {{form.parent}}
+        {{form.body}}
+        <div id="body_input" class=""></div>
+
+        {{form.submit(class_="br-400 bg-primary-400 text-secondary-100 p-2 bg-blue-950 w-1/4
+        text-white
+        font-semibold cursor-pointer")}}
+    </form>
+    {%endif%}
+    <button onclick="format_responses('{{question.id}}',null)">afd</button>
 </div>
 
+
+
+
+<script>
+    var body = $("#question_body");
+    var post = $.parseHTML("{{question.body|safe}}")
+    body.append(post);
+</script>
 <script src="/static/js/question.js"></script>
+
 {% endblock%}
