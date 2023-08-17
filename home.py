@@ -4,7 +4,7 @@ from flask import Blueprint, render_template,redirect,url_for,flash,make_respons
 from flask import request
 from extentions import db
 from forms import SignInForm ,SignUpForm,AskForm,ResponceForm
-from models import User, Subject,Question,Response,Vote
+from models import Save, User, Subject,Question,Response,Vote
 from werkzeug.security import check_password_hash,generate_password_hash
 from flask_login import login_user,logout_user, current_user,login_required
 import json
@@ -172,3 +172,16 @@ def handle_response(response_id):
     response = make_response(jsonify(success=True),200)
     response.headers["Content-Type"] = "application/json"
     return response
+
+
+@api.route('/s/<int:question_id>')
+@login_required
+def update_Save_Status(question_id):
+    question = Question.query.filter(Question.id==question_id).first_or_404()
+    user=current_user
+    if question in user.saved:
+        user.saved.remove(question) 
+    else:
+        user.saved.append(question)
+    db.session.commit()
+    return redirect(url_for('question', id=question_id))

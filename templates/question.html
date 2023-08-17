@@ -8,29 +8,49 @@
 
 <div class="flex flex-col mx-2 mt-2 ">
     <div>
-        <div class="mb-4 border-b-2">
-            <p class="text-2xl tracking-wide text-black font-bold mb-4">{{question.title}}</p>
-            <p>{{question.subject.name}}</p>
-            <a class="underline text-blue-600 hover:text-blue-800"
-                href="/u/{{question.user.id}}">@{{question.user.username}} </a>
-            <p class="text-gray-400 mb-2">{{question.date_posted.strftime('%d%/%m/%Y ')}}
-                {{question.date_posted.strftime('%H:%M')}}
-            </p>
-            <p>
-                <span class="material-symbols-outlined">
-                    visibility
-                </span>{{question.views}}
-            </p>
-            <p><span class="material-symbols-outlined">
-                    mode_comment
-                </span>{{question.responses|length}}
+        <div class="mb-4">
 
-            </p>
-            <p> <span class="material-symbols-outlined">
-                    favorite
-                </span> {{question.users_saved|length}} {{liked_by_user}}
-            </p>
+            <div class="flex justify-between">
+                <p class="text-4xl tracking-wide text-black font-bold">{{question.title}}
+                    <span class="text-gray-400 font-medium text-base">{{question.subject.name}}</span>
 
+                </p>
+                {% if current_user.is_authenticated%}
+                {%if liked_by_user%}
+                <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
+                    onclick="location.href='/s/{{question.id}}'">Unsave</button>
+                {%else%}
+                <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
+                    onclick="location.href='/s/{{question.id}}'">Save</button>
+                {%endif%}
+                {%endif%}
+
+            </div>
+
+            <div class="flex">
+                <p><span class="text-gray-400">Asked by</span> <a class="underline text-blue-600 hover:text-blue-800"
+                        href="/u/{{question.user.id}}">@{{question.user.username}} </a></p>
+
+                <p class="text-black ml-4"><span class="text-gray-400">Asked on</span>
+                    {{question.date_posted.strftime('%d%/%m/%Y ')}}
+                    {{question.date_posted.strftime('%H:%M')}}
+                </p>
+                <p class="ml-4">
+                    <span class="text-gray-400">Viewed</span>
+                    {{question.views}} times
+
+                </p>
+
+                <p class="ml-4">
+                    <span class="text-gray-400">Responses</span>
+                    {{question.responses|length}}
+                </p>
+                <p class="ml-4">
+                    <span class="text-gray-400">Saved by</span>
+                    {{question.users_saved|length}} users
+                </p>
+
+            </div>
         </div>
         <div class="question_body border-b-2 pb-2" id="question_body"></div>
     </div>
@@ -40,17 +60,22 @@
     <div id='question_replies'></div>
 
     <template id="question_reply_template">
-        <div>
+        <div id="question_reply_template_wrapper">
             <a id='question_reply_template_user' class="underline text-blue-600 hover:text-blue-800"></a>
             <p id='question_reply_template_date'></p>
 
-            <p id='question_reply_template_votes'> </p>
+            <p id="question_reply_template_votes"></p>
             <p id="question_reply_template_voteby"></p>
             <a id='question_reply_template_upvote'>upvote</a>
             <a id='question_reply_template_downvote'>downvote</a>
 
             <p id='question_reply_template_body'></p>
-            <a href="" id="question_reply_template_reply">add a reply</a>
+            <a id="question_reply_template_reply">add a reply</a>
+            <a id="question_reply_template_resonses"> show replies</a>
+            <div id="question_reply_template_children">
+
+
+            </div>
         </div>
         <hr>
     </template>
@@ -90,7 +115,6 @@
         font-semibold cursor-pointer")}}
     </form>
     {%endif%}
-    <button onclick="format_responses('{{question.id}}',null)">afd</button>
 </div>
 
 
@@ -99,6 +123,7 @@
 <script>
     var body = $("#question_body");
     var post = $.parseHTML("{{question.body|safe}}")
+    var question_id = "{{question.id}}"
     body.append(post);
 </script>
 <script src="/static/js/question.js"></script>
