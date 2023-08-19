@@ -57,6 +57,17 @@ function format_responses(responses, target_location) {
   responses.forEach((response) => {
     // clone the template
     const clone = template.content.cloneNode(true);
+    //format template variables
+    let vote_count = clone.querySelector(
+      "#question_reply_template_wrapper #question_reply_template_votes"
+    );
+
+    var upvote_ico = clone.querySelector(
+      " #question_reply_template_wrapper #question_reply_template_upvote"
+    );
+    var downvote_ico = clone.querySelector(
+      " #question_reply_template_wrapper #question_reply_template_downvote"
+    );
     //format template
     clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_date"
@@ -72,8 +83,6 @@ function format_responses(responses, target_location) {
       })
       .replace(/,/, "");
 
-    console.log(response);
-
     clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_user"
     ).innerHTML = `@${response.username}`;
@@ -83,10 +92,10 @@ function format_responses(responses, target_location) {
 
     clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_votes"
-    ).innerHTML = response.votes;
+    ).innerHTML = response.sum_votes;
     clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_voteby"
-    ).innerHTML = response.voted_by_user;
+    ).innerHTML = response.votes;
     clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_body"
     ).innerHTML = response.body;
@@ -96,14 +105,49 @@ function format_responses(responses, target_location) {
         "#question_reply_template_wrapper  #question_reply_template_upvote"
       )
       .addEventListener("click", function () {
-        update_vote(response.id, 1);
+        if (response.voted_by_user[0] === false) {
+          alert("you must be signed in to vote");
+        } else {
+          update_vote(response.id, 1).then((data) => {
+            vote_count.innerHTML =
+              parseFloat(vote_count.innerHTML) + data.delta;
+            if (data.state === true) {
+              upvote_ico.style.backgroundColor = "red";
+              downvote_ico.style.backgroundColor = "white";
+            }
+            if (data.state === null) {
+              upvote_ico.style.backgroundColor = "white";
+              downvote_ico.style.backgroundColor = "white";
+            }
+          });
+        }
       });
+
     clone
       .querySelector(
         " #question_reply_template_wrapper #question_reply_template_downvote"
       )
       .addEventListener("click", function () {
-        update_vote(response.id, 0);
+        //if the user isnt logged tell them
+        if (response.voted_by_user[0] === false) {
+          alert("you must be signed in to vote");
+        } else {
+          update_vote(response.id, 0).then((data) => {
+            //update the vote
+            vote_count.innerHTML =
+              parseFloat(vote_count.innerHTML) + data.delta;
+
+            //update the vote icon
+            if (data.state === false) {
+              upvote_ico.style.backgroundColor = "white";
+              downvote_ico.style.backgroundColor = "red";
+            }
+            if (data.state === null) {
+              upvote_ico.style.backgroundColor = "white";
+              downvote_ico.style.backgroundColor = "white";
+            }
+          });
+        }
       });
 
     clone
@@ -116,24 +160,57 @@ function format_responses(responses, target_location) {
         "#question_reply_template_wrapper #question_reply_template_reply"
       )
       .addEventListener("click", function () {
-        parent = response.id;
-        document.getElementById(
-          "form_replying_to"
-        ).innerHTML = `replying to: ${response.username}`;
+        if (response.voted_by_user[0] === false) {
+          alert("you must be signed in to add a reply");
+        } else {
+          parent = response.id;
+          document.getElementById(
+            "form_replying_to"
+          ).innerHTML = `replying to: ${response.username}`;
+        }
       });
-    let children = clone.querySelector(
-      "#question_reply_template_wrapper #question_reply_template_children"
+
+    let children = clone.querySelector("#question_reply_template_children");
+    let get_responses = clone.querySelector(
+      "#question_reply_template_wrapper #question_reply_template_resonses"
     );
-    clone
-      .querySelector(
+    if (response.num_child > 0) {
+      clone.querySelector(
         "#question_reply_template_wrapper #question_reply_template_resonses"
-      )
-      .addEventListener("click", function () {
-        console.log(children);
-        responses = request_responses(question_id, response.id).then((data) => {
-          format_responses(data, children);
+      ).innerHTML = "show replies";
+      clone
+        .querySelector(
+          "#question_reply_template_wrapper #question_reply_template_resonses"
+        )
+        .addEventListener("click", function handleClick() {
+          get_responses.removeEventListener("click", handleClick);
+          responses = request_responses(question_id, response.id).then(
+            (data) => {
+              format_responses(data, children);
+            }
+          );
         });
-      });
+    }
+    //manipulate styles of clone
+    if (response.voted_by_user[0]) {
+      if (response.voted_by_user[1] === true) {
+        clone.querySelector(
+          " #question_reply_template_wrapper #question_reply_template_upvote"
+        ).style.backgroundColor = "red";
+      }
+      if (response.voted_by_user[1] === false) {
+        clone.querySelector(
+          " #question_reply_template_wrapper #question_reply_template_downvote"
+        ).style.backgroundColor = "red";
+      }
+    }
+
+    if (response.parent_id !== null) {
+      clone
+        .querySelector(" #question_reply_template_wrapper")
+        .classList.add("ml-4");
+    }
+
     //append template
     target_location.appendChild(clone);
   });

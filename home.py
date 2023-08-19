@@ -1,10 +1,9 @@
 from datetime import datetime
-from http.client import responses
 from flask import Blueprint, render_template,redirect,url_for,flash,make_response,jsonify
 from flask import request
 from extentions import db
 from forms import SignInForm ,SignUpForm,AskForm,ResponceForm
-from models import Save, User, Subject,Question,Response,Vote
+from models import User, Subject,Question,Response,Vote
 from werkzeug.security import check_password_hash,generate_password_hash
 from flask_login import login_user,logout_user, current_user,login_required
 import json
@@ -123,6 +122,8 @@ def get_responses(question_id):
             for vote in votes:
                 if vote.user_id == current_user.id:
                     return [True, vote.state]
+
+            return [True,None]
         
         return [False,None]
     
@@ -135,8 +136,9 @@ def get_responses(question_id):
         'question_id': response.question_id, 
         'body': response.body,
         "num_child": len(response.replies),
-        "votes":sum([1 if vote.state else -1 for vote in response.votes]),
-        "voted_by_user": liked_by_user(response.votes)
+        "sum_votes":sum([1 if vote.state else -1 for vote in response.votes]),
+        "voted_by_user": liked_by_user(response.votes),
+        "votes":len(response.votes)
     } for response in responses]
 
     response = make_response(jsonify(responses), 200)
@@ -149,27 +151,46 @@ def get_responses(question_id):
 @login_required
 def handle_response(response_id):
     request_data = json.loads(request.data)
-    print(request_data)
 
     vote = Vote.query.filter(Vote.user_id==current_user.id, Vote.response_id==response_id).first()
     
-    print(vote)
+    #add new vote if none present
     if not vote:
         new_vote=Vote(user_id=current_user.id,response_id=response_id, state=request_data)
         db.session.add(new_vote)
         db.session.commit()
+        if request_data:
+            delta=1
+        else:
+            delta=-1
+        state=new_vote.state
+    #if there is a vote and the user had alreaded voted that way remove vote.
     elif vote and vote.state == request_data:
         db.session.delete(vote)
         db.session.commit()
+        if request_data:
+            delta=-1
+        else:
+            delta=1
+        state=None
+
+    #if there is a vote and the user has voted the other way change vote.
     elif vote and vote.state != request_data:
         if vote.state == 0:
             vote.state = 1
+            delta=2
+            state=True
         elif vote.state == 1:
             vote.state = 0
+            delta =-2
+            state=False
         db.session.commit()
-        
 
-    response = make_response(jsonify(success=True),200)
+    
+
+    print(state)
+
+    response = make_response(jsonify({'delta':delta,'state':state}),200)
     response.headers["Content-Type"] = "application/json"
     return response
 
