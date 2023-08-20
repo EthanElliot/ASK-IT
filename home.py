@@ -1,12 +1,14 @@
 from datetime import datetime
-from flask import Blueprint, render_template,redirect,url_for,flash,make_response,jsonify
-from flask import request
+from flask import Blueprint, render_template,redirect,url_for,flash,make_response,jsonify,abort,request
 from extentions import db
 from forms import SignInForm ,SignUpForm,AskForm,ResponceForm
 from models import User, Subject,Question,Response,Vote
 from werkzeug.security import check_password_hash,generate_password_hash
 from flask_login import login_user,logout_user, current_user,login_required
 import json
+from sqlalchemy import desc,asc
+
+
 
 
 api = Blueprint('', __name__)
@@ -206,3 +208,44 @@ def update_Save_Status(question_id):
         user.saved.append(question)
     db.session.commit()
     return redirect(url_for('question', id=question_id))
+
+@api.route('/get_questions')
+def get_questions():
+    if not request.args:
+        abort(404)
+
+    user_id= request.args.get("user_id")
+    counter = int(request.args.get("count")) 
+
+    order_direction = request.args.get("order_direction")
+    order_by=request.args.get("order_by")
+    print(order_direction)
+    print(order_by)
+    filter = None
+
+    if order_by =='date' and order_direction=='desc':
+        filter = desc(Question.date_posted)
+    if order_by =='date' and order_direction=='asc':
+        filter = asc(Question.date_posted)
+    if order_by =='viewed' and order_direction=='desc':
+        filter = desc(Question.views)
+    if order_by =='viewed' and order_direction=='asc':
+        filter = asc(Question.views)
+
+    print(filter)
+
+    questions:Question  = Question.query.filter(Question.user_id == user_id).order_by(filter).offset(counter).limit(5).all()
+  
+    questions = [{
+        "id":question.id,
+        "title":question.title,
+        "user_id":question.user_id,
+        "date_posted":question.date_posted,
+        "body":question.body,
+        "views":question.views,
+        "subject":question.subject.name,
+        "saves" :len(question.users_saved)
+    } for question in questions]
+
+    return make_response(jsonify(questions),200)
+    
