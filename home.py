@@ -271,3 +271,17 @@ def get_questions():
 def subject(subject):
     subject = Subject.query.filter(Subject.name == (subject.capitalize())).first_or_404()
     return render_template('subject.html', subject=subject)
+
+
+
+@api.route('/follow_subject/<int:subject_id>')
+@login_required
+def follow_subject(subject_id):
+    subject = Subject.query.filter(Subject.id==subject_id).first_or_404()
+    user=current_user
+    if subject in user.subjects:
+        user.subjects.remove(subject) 
+    else:
+        user.subjects.append(subject)
+    db.session.commit()
+    return redirect(url_for('subject', subject= subject.name))
