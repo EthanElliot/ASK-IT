@@ -31,11 +31,10 @@
 </head>
 
 <body>
-    <div class="relative min-h-screen flex">
-
+    <div class="absolute min-h-screen flex">
         <!-- side nav -->
         <div
-            class="bg-neutral-100 w-80 h-screen grid grid-rows-[3.4rem_auto_10rem] text-gray-700 border-r-2 sticky top-0">
+            class="bg-neutral-100 w-80 h-screen grid grid-rows-[3.4rem_auto_10rem] text-gray-700 border-r-2 sticky top-0 z-10">
             <div class="h-full flex my-auto items-center">
                 <img class="w-8 my-auto h-8 ml-1 object-cover"
                     src="{{ url_for('static', filename='Brand_Assets/LOGO.png') }}">
@@ -51,7 +50,8 @@
                         </a>
                     </li>
                     <li class="w-full hover:bg-white">
-                        <a class="w-full flex p-2 my-1 align-middle flex-1" href="/u/{{current_user.id}}">
+                        <a class="w-full flex p-2 my-1 align-middle flex-1"
+                            href="{% if current_user.is_authenticated %}/u/{{current_user.id}}{%else%}/signin{%endif%}">
                             <span class="material-symbols-outlined">person</span>
                             <p class="m-auto">Account</p>
                         </a>
@@ -72,13 +72,6 @@
                 <div class="mx-2 border-b-2 h-0"></div>
 
                 <ul class="w-full">
-                    <li class="w-full hover:bg-white ">
-                        <a class="w-full flex p-2 my-2 align-middle flex-1" href="">
-                            <span class="material-symbols-outlined">settings</span>
-                            <p class="m-auto">Settings</p>
-                        </a>
-                    </li>
-
                     <li class="w-full hover:bg-white">
                         <a class="w-full flex p-2 my-2 flex-1 align-middle" href="/logout">
                             <span class="material-symbols-outlined">logout</span>
@@ -98,6 +91,7 @@
                     <button class="p-2 bg-blue-950 text-white w-3/4 font-semibold"
                         onclick="location.href='/signup'">Join</button>
                 </div>
+
             </div>
             {%endif%}
 
@@ -108,11 +102,8 @@
         <div class="w-full">
             <!-- top nav -->
             <div
-                class="h-14 top-0 sticky border-b-2 grid {% if current_user.is_authenticated %} grid-cols-[auto_3.5rem_15rem] {%else%} grid-cols-[auto_15rem] {%endif%} text-gray-400 text-base">
-                <form class="w-full h-full border-r-2 flex items-center">
-                    <span class="material-symbols-outlined absolute ml-2 ">search</span>
-                    <input type="text" name="" id="" class="w-full h-full pl-10 focus:outline-0 ">
-                </form>
+                class="h-14 top-0 sticky border-b-2 grid {% if current_user.is_authenticated %} grid-cols-[auto_3.5rem_15rem] {%else%} grid-cols-[auto_15rem] {%endif%} text-gray-400 text-base z-10">
+                <div class="w-full h-full border-r-2 flex items-center bg-white"></div>
                 {% if current_user.is_authenticated %}
                 <button class=" w-full h-full bg-white border-r-2 flex justify-center items-center"
                     onclick="location.href='/ask'">
@@ -176,7 +167,7 @@
                 {%endif%}
             </div>
 
-            <div class="h-auto w-auto max-w-7xl mx-auto">
+            <div class="h-auto w-auto max-w-7xl mx-auto z-1">
                 {% block content %}
                 {% endblock %}
             </div>
