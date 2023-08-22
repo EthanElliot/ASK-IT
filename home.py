@@ -9,9 +9,8 @@ import json
 from sqlalchemy import desc,asc
 
 
-
-
 api = Blueprint('', __name__)
+
 
 
 @api.get('/')
