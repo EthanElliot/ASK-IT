@@ -5,51 +5,49 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
-<div class="flex flex-col mx-2 mt-2">
+<div class="flex flex-col mt-2 mx-2 mb-4">
     <div class="mb-4">
-        <div class="mb-4">
 
-            <div class="flex justify-between">
-                <p class="text-4xl tracking-wide text-black font-bold">{{question.title}}
-                    <span class="text-gray-400 font-medium text-base">{{question.subject.name}}</span>
+        <div class="flex justify-between w-full">
+            <p class="text-4xl tracking-wide text-black font-bold">{{question.title}}
+                <span class="text-gray-400 font-medium text-base">{{question.subject.name}}</span>
 
-                </p>
-                {% if current_user.is_authenticated%}
-                {%if liked_by_user%}
-                <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
-                    onclick="location.href='/s/{{question.id}}'">Unsave</button>
-                {%else%}
-                <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
-                    onclick="location.href='/s/{{question.id}}'">Save</button>
-                {%endif%}
-                {%endif%}
+            </p>
+            {% if current_user.is_authenticated%}
+            {%if liked_by_user%}
+            <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
+                onclick="location.href='/s/{{question.id}}'">Unsave</button>
+            {%else%}
+            <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
+                onclick="location.href='/s/{{question.id}}'">Save</button>
+            {%endif%}
+            {%endif%}
 
-            </div>
+        </div>
 
-            <div class="flex">
-                <p><span class="text-gray-400">Asked by</span> <a class="underline text-blue-600 hover:text-blue-800"
-                        href="/u/{{question.user.id}}">@{{question.user.username}} </a></p>
+        <div class="flex max-lg:grid max-lg:grid-cols-3 max-lg:grid-rows-2">
+            <p><span class="text-gray-400">Asked by</span> <a class="underline text-blue-600 hover:text-blue-800"
+                    href="/u/{{question.user.id}}">@{{question.user.username}} </a></p>
 
-                <p class="text-black ml-4"><span class="text-gray-400">Asked on</span>
-                    {{question.date_posted.strftime('%d%/%m/%Y ')}}
-                    {{question.date_posted.strftime('%H:%M')}}
-                </p>
-                <p class="ml-4">
-                    <span class="text-gray-400">Viewed</span>
-                    {{question.views}} times
+            <p class="text-black ml-4"><span class="text-gray-400">Asked on</span>
+                {{question.date_posted.strftime('%d%/%m/%Y ')}}
+                {{question.date_posted.strftime('%H:%M')}}
+            </p>
+            <p class="ml-4">
+                <span class="text-gray-400">Viewed</span>
+                {{question.views}} times
 
-                </p>
+            </p>
 
-                <p class="ml-4">
-                    <span class="text-gray-400">Responses</span>
-                    {{question.responses|length}}
-                </p>
-                <p class="ml-4">
-                    <span class="text-gray-400">Saved by</span>
-                    {{question.users_saved|length}} users
-                </p>
+            <p class="ml-4">
+                <span class="text-gray-400">Responses</span>
+                {{question.responses|length}}
+            </p>
+            <p class="ml-4">
+                <span class="text-gray-400">Saved by</span>
+                {{question.users_saved|length}} users
+            </p>
 
-            </div>
         </div>
         <div class="question_body" id="question_body"></div>
     </div>

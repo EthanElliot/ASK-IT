@@ -2,7 +2,7 @@
 {% block content %}
 
 
-<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2 z-1">
+<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2 z-1  max-md:flex max-md:flex-col-reverse h-full">
     <!-- nav for home -->
     <div>
         <div class="grid grid-cols-[auto_1fr_auto] w-full mb-6 h-8 items-center">
@@ -62,9 +62,21 @@
 
     </div>
     <!-- body of home -->
-    <div class="relative z-[1]">
+    <div class="relative mb-6">
         <div class=" bg-neutral-100 sticky top-16 items-center px-2 pb-6">
-            <p class="text-black font-bold text-xl h-8 ">{{subject.name}}</p>
+
+            <p class="text-black font-bold text-xl h-8 ">{{subject.name}} {%if subject in current_user.subjects%} <span
+                    class="text-gray-400 mr-2 font-normal text-base mb-4">following</span> {%endif%}</p>
+            {% if current_user.is_authenticated%}
+            {%if subject in current_user.subjects%}
+            <button class="p-2 px-4 bg-blue-950 text-white font-semibold w-full"
+                onclick="location.href='/follow_subject/{{subject.id}}'">Unfollow</button>
+            {%else%}
+            <button class="p-2 px-4 bg-blue-950 text-white font-semibold w-full"
+                onclick="location.href='/follow_subject/{{subject.id}}'">Follow</button>
+            {%endif%}
+            {%endif%}
+            <p class="mt-2">{{subject.description}}</p>
 
 
         </div>

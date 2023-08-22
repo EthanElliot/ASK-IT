@@ -2,7 +2,7 @@
 {% block content %}
 
 
-<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2">
+<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2  max-md:flex max-md:flex-col-reverse h-full">
     <!-- nav for home -->
     <div>
         <div class="grid grid-cols-[auto_1fr_auto] w-full mb-6 h-8 items-center">
@@ -62,7 +62,7 @@
 
     </div>
     <!-- body of home -->
-    <div class="relative z-[1]">
+    <div class="relative mb-6">
         <div class=" bg-neutral-100 sticky top-16 items-center px-2 pb-6">
             <p class="text-black font-bold text-xl h-8  ">Filter by keyword</p>
             <div class="w-full flex items-center h-8 mb-4">
@@ -74,6 +74,7 @@
             <p class="text-black font-bold text-xl">Subjects</p>
             <div>
                 {%if current_user.is_authenticated%}
+                {%if current_user.subjects%}
                 <div class="mb-2">
                     <p class="text-gray-400">Your subjects</p>
                     {%for subject in subjects%}
@@ -83,11 +84,14 @@
                     {%endfor%}
                 </div>
                 {%endif%}
+                {%endif%}
 
                 <div class="mb-2">
                     {%if current_user.is_authenticated%}
+                    {%if current_user.subjects%}
                     <p class="text-gray-400">Other subjects</p>{%else%}
                     <p class="text-gray-400">subjects</p>
+                    {%endif%}
                     {%endif%}
                     {%for subject in subjects%}
                     {%if subject not in current_user.subjects%}

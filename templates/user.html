@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2">
+<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2 max-md:flex max-md:flex-col-reverse h-full">
     <div>
         <div class="grid grid-cols-[auto_1fr_auto] w-full mb-6 h-8 items-center">
             <p class="text-black font-bold text-xl">Posts</p>
@@ -54,28 +54,34 @@
             </div>
         </div>
     </div>
-
-    <div class=" bg-neutral-100 h-fit">
-        {% if user.img%}
-        {% else %}
-        <img class="w-full aspect-square" src="{{ url_for('static', filename='default_profile.svg') }}" />
-        {% endif%}
-        <div class="p-2 ">
-
-            <p class="font-medium text-xl mb-2">{{user.username}}</p>
-
-
-            <div class="flex m-2">
-                <div class="w-1/2">
-                    <span class="text-neutral-300">Questions</span>
-                    {{user.questions| length }}
-                </div>
-                <div class="w-1/2">
-                    <span class="text-neutral-300">Responces</span>
-                    {{user.responses| length }}
-                </div>
+    <div class="relative mb-6 ">
+        <div class=" bg-neutral-100 sticky top-16 items-center pb-6 max-sm:flex-col max-md:flex max-md:pb-0 max-md:h-1/2
+          ">
+            {% if user.img%}
+            {% else %}
+            <div class="inline-block relative">
+                <img class=" aspect-square max-md:h-full"
+                    src="{{ url_for('static', filename='default_profile.svg') }}" />
             </div>
 
+            {% endif%}
+            <div class="p-2 w-full ">
+
+                <p class="font-medium text-xl mb-2">{{user.username}}</p>
+
+
+                <div class="flex m-2 max-md:block ">
+                    <div class="w-1/2">
+                        <span class="text-neutral-300">Questions</span>
+                        {{user.questions| length }}
+                    </div>
+                    <div class="w-1/2">
+                        <span class="text-neutral-300">Responces</span>
+                        {{user.responses| length }}
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
