@@ -16,7 +16,8 @@ api = Blueprint('', __name__)
 
 @api.get('/')
 def home():
-    return render_template("home.html")
+    subjects = Subject.query.all()
+    return render_template("home.html",subjects=subjects)
 
 
 @api.route('/u/<int:id>')
@@ -214,32 +215,47 @@ def get_questions():
     if not request.args:
         abort(404)
 
-    user_id= request.args.get("user_id")
+    user_id= request.args.get("user_id") 
     counter = int(request.args.get("count")) 
 
     order_direction = request.args.get("order_direction")
     order_by=request.args.get("order_by")
-    print(order_direction)
-    print(order_by)
-    filter = None
+
+    filter = request.args.get("filter")
+    subject_id = request.args.get("subject_id")
+    print(subject_id)
 
     if order_by =='date' and order_direction=='desc':
-        filter = desc(Question.date_posted)
+        order = desc(Question.date_posted)
     if order_by =='date' and order_direction=='asc':
-        filter = asc(Question.date_posted)
+        order = asc(Question.date_posted)
     if order_by =='viewed' and order_direction=='desc':
-        filter = desc(Question.views)
+        order = desc(Question.views)
     if order_by =='viewed' and order_direction=='asc':
-        filter = asc(Question.views)
+        order = asc(Question.views)
 
-    print(filter)
+    print(order)
 
-    questions:Question  = Question.query.filter(Question.user_id == user_id).order_by(filter).offset(counter).limit(5).all()
+    
+    query:Question  = Question.query.order_by(order)
   
+    if user_id:
+        query = query.filter(Question.user_id == user_id)
+
+    if filter:
+        query = query.filter(Question.title.ilike(f'%{filter}%'))
+    
+    if subject_id:
+        query = query.filter(Question.subject_id == subject_id)
+
+    questions = query.offset(counter).limit(5).all()
+    
+    print(questions)
     questions = [{
         "id":question.id,
         "title":question.title,
         "user_id":question.user_id,
+        "user_username":question.user.username,
         "date_posted":question.date_posted,
         "body":question.body,
         "views":question.views,
@@ -249,3 +265,9 @@ def get_questions():
 
     return make_response(jsonify(questions),200)
     
+
+
+@api.route('/s/<subject>')
+def subject(subject):
+    subject = Subject.query.filter(Subject.name == (subject.capitalize())).first_or_404()
+    return render_template('subject.html', subject=subject)
