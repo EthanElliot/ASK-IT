@@ -13,28 +13,15 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
 </head>
 
 <body>
-    <div class="absolute min-h-screen flex">
+    <div class="relative min-h-screen flex">
         <!-- side nav -->
         <div
-            class="bg-neutral-100 w-80 h-screen grid grid-rows-[3.4rem_auto_10rem] text-gray-700 border-r-2 sticky top-0 z-10">
+            class="bg-neutral-100 w-80 h-screen hidden grid-rows-[3.4rem_auto_10rem] text-gray-700 border-r-2 sticky top-0 z-10 lg:grid">
             <div class="h-full flex my-auto items-center">
                 <img class="w-8 my-auto h-8 ml-1 object-cover"
                     src="{{ url_for('static', filename='Brand_Assets/LOGO.png') }}">
@@ -99,19 +86,19 @@
         </div>
 
         <!-- right -->
-        <div class="w-full">
+        <div class="w-full ">
             <!-- top nav -->
             <div
-                class="h-14 top-0 sticky border-b-2 grid {% if current_user.is_authenticated %} grid-cols-[auto_3.5rem_15rem] {%else%} grid-cols-[auto_15rem] {%endif%} text-gray-400 text-base z-10">
+                class="h-14 top-0 sticky border-b-2 grid {% if current_user.is_authenticated %} grid-cols-[auto_3.5rem_15rem] {%else%} grid-cols-[auto_15rem] {%endif%} text-gray-400 text-base z-10 max-lg:grid-cols-[auto_4rem] ">
                 <div class="w-full h-full border-r-2 flex items-center bg-white"></div>
                 {% if current_user.is_authenticated %}
-                <button class=" w-full h-full bg-white border-r-2 flex justify-center items-center"
+                <button class=" w-full h-full bg-white border-r-2 hidden justify-center items-center lg:flex "
                     onclick="location.href='/ask'">
                     <span class="material-symbols-outlined">add</span>
                 </button>
-                <button id="user_dropdown_btn" class=" w-full h-full bg-white px-2  z-10 "
-                    onclick="Dropdown_Function()">
-                    <div id="user_dropdown_btn" class="flex items-center -z-0">
+                <button id="user_dropdown_btn" class=" w-full h-full bg-white px-2 z-10 max-lg:hidden" onclick="
+                Dropdown_Function()">
+                    <div id="user_dropdown_btn" class="hidden items-center -z-0 lg:flex">
                         <img id="user_dropdown_btn" class="rounded-full w-8 mr-2"
                             src="{{ url_for('static', filename='default_profile.svg') }}">
                         </img>
@@ -121,10 +108,19 @@
                         </span>
                     </div>
 
+
+                </button>
+                <button id="user_dropdown_btn" onclick="
+                Dropdown_Function()" class=" w-full h-full bg-white px-2 z-10 lg:hidden">
+                    <div id="user_dropdown_btn" class="space-y-2  mx-auto flex flex-col items-center -z-0">
+                        <div class="w-8 h-0.5 bg-gray-600"></div>
+                        <div class="w-8 h-0.5 bg-gray-600"></div>
+                        <div class="w-8 h-0.5 bg-gray-600"></div>
+                    </div>
                 </button>
                 <!-- USER DROPDOWN -->
                 <div id="User_dropdown"
-                    class="z-10 absolute top-14 w-[14rem] h-auto bg-neutral-100 right-2 hidden border-x-2 border-b-2">
+                    class="z-10 absolute top-14 w-[14rem] h-auto bg-neutral-100 right-2 hidden border-x-2 border-b-2 max-lg:w-full max-lg:right-0 max-lg:border-x-0">
                     <ul class="mt-2 mb-4">
                         <li class="mx-2 mb-2">
                             <p class="text-sm">Signed in as</p>
@@ -157,13 +153,59 @@
                 </div>
                 {%else%}
 
-                <button class="w-full h-full flex items-center justify-center bg-white "
+                <button class="w-full h-full flex items-center justify-center bg-white max-lg:hidden "
                     onclick="location.href='/signin'">
                     <span class="material-symbols-outlined mr-2">
                         login
                     </span>
                     <p>sign in</p>
                 </button>
+                <button id="user_dropdown_btn" onclick="
+                Dropdown_Function()" class=" w-full h-full bg-white px-2 z-10 lg:hidden">
+                    <div id="user_dropdown_btn" class="space-y-2  mx-auto flex flex-col items-center -z-0">
+                        <div class="w-8 h-0.5 bg-gray-600"></div>
+                        <div class="w-8 h-0.5 bg-gray-600"></div>
+                        <div class="w-8 h-0.5 bg-gray-600"></div>
+                    </div>
+                </button>
+                <!-- USER DROPDOWN -->
+                <div id="User_dropdown"
+                    class="z-10 absolute top-14 w-[14rem] h-auto bg-neutral-100 right-2 hidden border-x-2 border-b-2 max-lg:w-full max-lg:right-0 max-lg:border-x-0">
+                    <ul class="mt-2 mb-4">
+                        <li class="mx-2 mb-2">
+                            <p class="text-sm">Sign in to use full functionality</p>
+                        </li>
+
+                        <div class="mx-2 border-b-2 h-0"></div>
+                        <li class="hover:bg-white">
+                            <a class="w-full flex p-2 my-2 flex-1 align-middle" href="/">
+                                <span class="material-symbols-outlined">home</span>
+                                <p class="m-auto">Home</p>
+                            </a>
+                        </li>
+                        <li class="hover:bg-white">
+                            <a class="w-full flex p-2 my-2 align-middle flex-1" href="/signin">
+                                <span class="material-symbols-outlined">person</span>
+                                <p class="m-auto">Sign in</p>
+                            </a>
+                        </li>
+                        <li class="hover:bg-white">
+                            <a class="w-full flex p-2 my-2 align-middle flex-1" href="/signup">
+                                <span class="material-symbols-outlined">
+                                    person_add
+                                </span>
+                                <p class="m-auto">Sign up</p>
+                            </a>
+                        </li>
+
+
+
+
+
+                    </ul>
+
+
+                </div>
                 {%endif%}
             </div>
 
