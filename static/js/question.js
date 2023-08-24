@@ -40,7 +40,7 @@ form.on("submit", function () {
 //
 
 async function request_responses(question_id, parent_id) {
-  let response = await fetch(`/r/${question_id}`, {
+  let response = await fetch(`/get_responses/${question_id}`, {
     method: "POST",
     body: JSON.stringify({
       parent_id: parent_id,
@@ -229,7 +229,7 @@ function format_responses(responses, target_location) {
 }
 
 function update_vote(response_id, vote_state) {
-  return fetch(`/v/${response_id}`, {
+  return fetch(`/update_vote/${response_id}`, {
     method: "POST", // Use 'POST' for sending data
     headers: {
       "Content-Type": "application/json",

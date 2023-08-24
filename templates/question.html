@@ -16,10 +16,10 @@
             {% if current_user.is_authenticated%}
             {%if liked_by_user%}
             <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
-                onclick="location.href='/s/{{question.id}}'">Unsave</button>
+                onclick="location.href='/update_Save_Status/{{question.id}}'">Unsave</button>
             {%else%}
             <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
-                onclick="location.href='/s/{{question.id}}'">Save</button>
+                onclick="location.href='/update_Save_Status/{{question.id}}'">Save</button>
             {%endif%}
             {%endif%}
 

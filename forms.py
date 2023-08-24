@@ -1,46 +1,51 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,EmailField,PasswordField,SubmitField,ValidationError, SelectField,HiddenField,FileField
+from wtforms import StringField, EmailField, PasswordField, SubmitField,\
+    ValidationError, SelectField, HiddenField
 from wtforms.validators import DataRequired, Length, EqualTo
-from models import Subject, User
-from extentions import db
-import logging
+from models import User
 import html2text
+
+
+# import logging
 # logging.basicConfig()
 # logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
 
-
-#alphabet validator
+# alphabet validator
 def alphabet_check(form, field):
     for char in field.data:
-        if char not in ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","0","1","2","3","4","5","6","7","8","9","_"]:
+        if char not in ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "_"]:
             raise ValidationError(f'"{char}" is not allowed.')
         else:
             continue
+
+# check if username is taken
 
 
 def username_taken(form, field):
     if field.type != "StringField":
         return
-    else: 
+    else:
         user = User.query.filter((User.username == field.data)).first()
-        
+
         if user:
             raise ValidationError('username already taken')
 
 
+# check if email is taken
 def email_taken(form, field):
     if field.type != "EmailField":
         return
-    else: 
+    else:
         user = User.query.filter((User.email == str(field.data))).first()
         if user:
             raise ValidationError('email already taken')
 
-#form classea
+
+# signup form class
 class SignUpForm(FlaskForm):
     username = StringField(
-        'username', 
+        'username',
         validators=[
             DataRequired(message="username is required"),
             Length(min=4, max=50),
@@ -48,11 +53,11 @@ class SignUpForm(FlaskForm):
             username_taken],
         render_kw={
             "placeholder": "username"}
-        )
-        
+    )
+
     email = EmailField(
         'email',
-        validators=[ 
+        validators=[
             DataRequired(message="username is required"),
             email_taken],
         render_kw={
@@ -78,15 +83,16 @@ class SignUpForm(FlaskForm):
     submit = SubmitField('sign up')
 
 
+# signin form class
 class SignInForm(FlaskForm):
     identifier = StringField(
-        'identifier', 
+        'identifier',
         validators=[
             DataRequired(message="username or password is required"),
             Length(min=4, max=50)],
         render_kw={
             "placeholder": "username or email"}
-        )
+    )
     password = PasswordField(
         'Password',
         validators=[
@@ -94,40 +100,44 @@ class SignInForm(FlaskForm):
             Length(min=3)
         ],
         render_kw={"placeholder": "Password"})
-    
+
     submit = SubmitField('sign in')
 
-#add must select validator
+
+# Ask form object
 class AskForm(FlaskForm):
-    title = StringField('title', 
-    validators=[
-        DataRequired(message='post must have a title'),
-        Length(min=15, max=100)], render_kw={"placeholder": "e.g. what is 1+1?"})
+    title = StringField('title',
+                        validators=[
+                            DataRequired(message='post must have a title'),
+                            Length(min=15, max=100)],
+                        render_kw={"placeholder": "e.g. what is 1+1?"})
     subject = SelectField(choices=[])
 
-    body= HiddenField('body', validators=[])
+    body = HiddenField('body', validators=[])
     submit = SubmitField("Ask")
-    #min lenth validator
+    # min lenth validator
+
     def validate_body(self, body):
         text = len(html2text.html2text(body.data))
         if text < 40:
-            raise ValidationError('body of question is too short')    
+            raise ValidationError('body of question is too short')
 
         if text > 2000:
             raise ValidationError('body of question is too long')
 
+# response form class
+
 
 class ResponceForm(FlaskForm):
-    #min lenth validator
-    body= HiddenField('body', validators=[])
-    parent=HiddenField('parent')
+    # min lenth validator
+    body = HiddenField('body', validators=[])
+    parent = HiddenField('parent')
     submit = SubmitField("submit")
-    
+
     def validate_body(self, body):
         text = len(html2text.html2text(body.data))
         if text < 20:
-            raise ValidationError('body of question too short')    
+            raise ValidationError('body of question too short')
 
         if text > 1000:
             raise ValidationError('body of question too long')
-
