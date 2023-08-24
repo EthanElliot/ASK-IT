@@ -1,10 +1,14 @@
 # imports
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
 from extentions import db, login_manager
+from models import Subject, Question, Response, User, Vote
+from flask_login import current_user
 from home import home
 from auth import auth
 from api import api
 from werkzeug.exceptions import HTTPException
+from flask_admin import Admin, AdminIndexView
+from flask_admin.contrib.sqla import ModelView
 
 
 # FLASK APP
@@ -19,6 +23,37 @@ login_manager.init_app(app)
 app.register_blueprint(home)
 app.register_blueprint(auth)
 app.register_blueprint(api)
+
+
+# init admin and make it hidden to non admin users
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.admin
+
+    def inaccessible_callback(self, name, **kwargs):
+        # Redirect non-admin users to a 404 page
+        abort(404)
+
+    def is_visible(self):
+        # This view won't appear in the menu structure
+        return False
+
+
+class AdminModelView(ModelView):
+    def is_accessible(self):
+        if current_user.is_authenticated and current_user.admin:
+            return True
+        else:
+            abort(404)
+
+
+admin = Admin(app,  index_view=MyAdminIndexView())
+admin.add_view(AdminModelView(User, db.session))
+admin.add_view(AdminModelView(Question, db.session))
+admin.add_view(AdminModelView(Response, db.session))
+admin.add_view(AdminModelView(Subject, db.session))
+admin.add_view(AdminModelView(Vote, db.session))
+admin.add_view(AdminModelView(Question, db.session))
 
 
 # general error handeler

@@ -44,7 +44,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
-    verified = db.Column(db.Boolean, default=False, nullable=False)
+    admin = db.Column(db.Boolean, default=False, nullable=False)
 
     saved = db.relationship('Question', secondary=Save, backref="users_saved")
 

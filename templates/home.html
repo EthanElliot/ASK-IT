@@ -89,12 +89,19 @@
                 <div class="mb-2">
                     {%if current_user.is_authenticated%}
                     {%if current_user.subjects%}
-                    <p class="text-gray-400">Other subjects</p>{%else%}
+                    <p class="text-gray-400">Other subjects</p>
+                    {%else%}
                     <p class="text-gray-400">subjects</p>
                     {%endif%}
                     {%endif%}
+
                     {%for subject in subjects%}
+                    {%if current_user.is_authenticated%}
                     {%if subject not in current_user.subjects%}
+                    <a class="inline-block" href='/s/{{subject.name}}'>{{subject.name}}</a>
+                    {%endif%}
+
+                    {%else%}
                     <a class="inline-block" href='/s/{{subject.name}}'>{{subject.name}}</a>
                     {%endif%}
                     {%endfor%}

@@ -60,6 +60,14 @@
                 <div class="mx-2 border-b-2 h-0"></div>
 
                 <ul class="w-full">
+                    {%if current_user.admin%}
+                    <li class="w-full hover:bg-white">
+                        <a class="w-full flex p-2 my-2 flex-1 align-middle" href="/admin/">
+                            <span class="material-symbols-outlined">admin_panel_settings</span>
+                            <p class="m-auto">Admin</p>
+                        </a>
+                    </li>
+                    {%endif%}
                     <li class="w-full hover:bg-white">
                         <a class="w-full flex p-2 my-2 flex-1 align-middle" href="/logout">
                             <span class="material-symbols-outlined">logout</span>
