@@ -61,7 +61,9 @@ function format_responses(responses, target_location) {
     let vote_count = clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_votes"
     );
-
+    let votes = clone.querySelector(
+      "#question_reply_template_wrapper #question_reply_template_voteby"
+    );
     var upvote_ico = clone.querySelector(
       " #question_reply_template_wrapper #question_reply_template_upvote"
     );
@@ -99,7 +101,7 @@ function format_responses(responses, target_location) {
     clone.querySelector(
       "#question_reply_template_wrapper #question_reply_template_body"
     ).innerHTML = response.body;
-
+    console.log(response.votes);
     clone
       .querySelector(
         "#question_reply_template_wrapper  #question_reply_template_upvote"
@@ -111,13 +113,15 @@ function format_responses(responses, target_location) {
           update_vote(response.id, 1).then((data) => {
             vote_count.innerHTML =
               parseFloat(vote_count.innerHTML) + data.delta;
+            votes.innerHTML = response.votes;
             if (data.state === true) {
-              upvote_ico.style.backgroundColor = "red";
-              downvote_ico.style.backgroundColor = "white";
+              upvote_ico.classList.add("icon_fill");
+              downvote_ico.classList.remove("icon_fill");
+              votes.innerHTML = parseFloat(votes.innerHTML) + 1;
             }
             if (data.state === null) {
-              upvote_ico.style.backgroundColor = "white";
-              downvote_ico.style.backgroundColor = "white";
+              upvote_ico.classList.remove("icon_fill");
+              downvote_ico.classList.remove("icon_fill");
             }
           });
         }
@@ -136,15 +140,19 @@ function format_responses(responses, target_location) {
             //update the vote
             vote_count.innerHTML =
               parseFloat(vote_count.innerHTML) + data.delta;
+            votes.innerHTML = response.votes;
 
             //update the vote icon
             if (data.state === false) {
-              upvote_ico.style.backgroundColor = "white";
-              downvote_ico.style.backgroundColor = "red";
+              upvote_ico.classList.remove("icon_fill");
+              downvote_ico.classList.add("icon_fill");
+              votes.innerHTML = parseFloat(votes.innerHTML) + 1;
             }
             if (data.state === null) {
-              upvote_ico.style.backgroundColor = "white";
-              downvote_ico.style.backgroundColor = "white";
+              upvote_ico.classList.remove("icon_fill");
+              downvote_ico.classList.remove("icon_fill");
+
+              votes.innerHTML = parseFloat(votes.innerHTML);
             }
           });
         }
@@ -194,14 +202,18 @@ function format_responses(responses, target_location) {
     //manipulate styles of clone
     if (response.voted_by_user[0]) {
       if (response.voted_by_user[1] === true) {
-        clone.querySelector(
-          " #question_reply_template_wrapper #question_reply_template_upvote"
-        ).style.backgroundColor = "red";
+        clone
+          .querySelector(
+            " #question_reply_template_wrapper #question_reply_template_upvote"
+          )
+          .classList.add("icon_fill");
       }
       if (response.voted_by_user[1] === false) {
-        clone.querySelector(
-          " #question_reply_template_wrapper #question_reply_template_downvote"
-        ).style.backgroundColor = "red";
+        clone
+          .querySelector(
+            " #question_reply_template_wrapper #question_reply_template_downvote"
+          )
+          .classList.add("icon_fill");
       }
     }
 
@@ -233,6 +245,7 @@ function update_vote(response_id, vote_state) {
 
 $(window).on("load", function () {
   responses = request_responses(question_id, null).then((data) => {
+    responses_body.innerHTML = "";
     format_responses(data, responses_body);
   });
 });

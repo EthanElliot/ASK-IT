@@ -2,18 +2,18 @@
 var scroller = document.querySelector("#scroller");
 var template = document.querySelector("#account_question");
 var sentinel = document.querySelector("#sentinel");
-var filter = document.querySelector("#filter");
+var order = document.querySelector("#order");
 
 // Set a counter to count the items loaded
 var counter = 0;
 
 // Function to request new items and render to the dom
 function loadItems() {
-  let f = JSON.parse(filter.value);
+  let ord = JSON.parse(order.value);
 
   // Use fetch to request data and pass the counter value in the QS
   fetch(
-    `/get_questions?count=${counter}&user_id=${user_id}&order_direction=${f[0]}&order_by=${f[1]}`
+    `/get_questions?count=${counter}&user_id=${user_id}&order_direction=${ord[0]}&order_by=${ord[1]}`
   ).then((response) => {
     // Convert the response data to JSON
     response.json().then((data) => {
@@ -94,7 +94,7 @@ var intersectionObserver = new IntersectionObserver((entries) => {
 // Instruct the IntersectionObserver to watch the sentinel
 intersectionObserver.observe(sentinel);
 
-filter.addEventListener("change", function () {
+order.addEventListener("change", function () {
   counter = 0;
   scroller.innerHTML = "";
   return;

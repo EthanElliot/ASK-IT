@@ -70,7 +70,12 @@ def ask():
     if form.validate_on_submit():
      
         body_md = (form.body.data[1:-1])
-        new_post=Question(user_id=(current_user.id),subject_id=(form.subject.data), title=(form.title.data),date_posted=(datetime.now()),body=(body_md), views=0)
+        new_post=Question(user_id=(current_user.id),
+                            subject_id=(form.subject.data),
+                            title=(form.title.data),
+                            date_posted=(datetime.now()),
+                            body=(body_md),
+                            views=0)
         db.session.add(new_post)
         db.session.commit()
 
@@ -222,7 +227,6 @@ def get_questions():
 
     filter = request.args.get("filter")
     subject_id = request.args.get("subject_id")
-    print(subject_id)
 
     if order_by =='date' and order_direction=='desc':
         order = desc(Question.date_posted)
@@ -232,9 +236,6 @@ def get_questions():
         order = desc(Question.views)
     if order_by =='viewed' and order_direction=='asc':
         order = asc(Question.views)
-
-    print(order)
-
     
     query:Question  = Question.query.order_by(order)
   

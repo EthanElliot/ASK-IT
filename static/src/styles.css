@@ -46,3 +46,7 @@
 .question_body ul {
   @apply list-disc list-inside;
 }
+
+.icon_fill {
+  font-variation-settings: "FILL" 1 !important;
+}

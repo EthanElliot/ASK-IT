@@ -58,21 +58,22 @@
     </div>
 
     <!-- replies  -->
-    <div id='question_replies'></div>
+    <div id='question_replies'>
+        <p>loading...</p>
+    </div>
 
     <template id="question_reply_template">
         <div id="question_reply_template_wrapper" class="mb-2 grid grid-cols-[3rem_auto] min-h-[8rem] ">
             <div class=" flex flex-col justify-between">
-                <a id='question_reply_template_upvote'>
-                    <div><span class="material-symbols-outlined">
-                            arrow_circle_up
-                        </span></div>
 
-                </a>
+                <span id='question_reply_template_upvote' class="material-symbols-outlined">
+                    arrow_circle_up
+                </span>
+
                 <p id="question_reply_template_votes"></p>
-                <a id='question_reply_template_downvote'><span class="material-symbols-outlined">
-                        arrow_circle_down
-                    </span></a>
+                <span id='question_reply_template_downvote' class="material-symbols-outlined">
+                    arrow_circle_down
+                </span>
 
             </div>
             <div class="flex flex-col">
@@ -85,7 +86,7 @@
                 </div>
 
 
-                <p id='question_reply_template_body'></p>
+                <p class="question_body" id='question_reply_template_body'></p>
                 <div class="mt-auto">
                     <a id="question_reply_template_reply">add a reply</a>
                     <a id="question_reply_template_resonses"></a>

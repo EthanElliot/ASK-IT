@@ -6,12 +6,14 @@ UserSubject = db.Table("UserSubject",
     db.Column('subject_id', db.Integer, db.ForeignKey('subject.id'), primary_key=True)
 )
 
+
 Save = db.Table("Save",
   db.Column('question_id', db.Integer, db.ForeignKey('question.id'), primary_key=True),
     db.Column('user_id', db.Integer, db.ForeignKey('User.id'), primary_key=True)
 )
 
-#association object
+
+#association object table for vote
 class Vote(db.Model):
     __tablename__ ="Vote"
 
@@ -38,7 +40,6 @@ class User(db.Model, UserMixin):
     verified = db.Column(db.Boolean, default=False, nullable=False)
 
     saved = db.relationship('Question', secondary=Save, backref="users_saved")
-
     
 
 class Subject(db.Model):
