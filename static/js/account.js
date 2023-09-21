@@ -21,15 +21,15 @@ function loadItems() {
     // Convert the response data to JSON
     response.json().then((data) => {
       // If empty JSON, exit the function
-      if (!data.length) {
-        if (counter === 0) {
+      if (data.length < 5) {
+        if (counter === 0 && data.length === 0) {
           // Replace the spinner with "No more posts"
           sentinel.innerHTML = "No posts";
+          return;
         } else {
           // Replace the spinner with "No more posts"
           sentinel.innerHTML = "No more posts";
         }
-        return;
       }
 
       // Iterate over the items in the response
