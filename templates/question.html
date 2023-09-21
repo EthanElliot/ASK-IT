@@ -91,7 +91,7 @@
                 <p class="question_body block mb-2 w-full whitespace-normal [&>*]:whitespace-normal	max-w-[100vw] "
                     id="question_reply_template_body" style="overflow-wrap: anywhere">
                 <div class="mt-auto">
-                    <a id="question_reply_template_reply">add a reply</a>
+                    <a id="question_reply_template_reply">add a reply!</a>
                     <a id="question_reply_template_resonses"></a>
                 </div>
 
@@ -132,6 +132,7 @@
         {{ form.csrf_token }}
         {{form.parent}}
         {{form.body}}
+        <p class="text-gray-400"> Minimum 20 charaters. Maximum 1000 charaters.</p>
         <div id="body_input" class=""></div>
 
         {{form.submit(class_="br-400 bg-primary-400 text-secondary-100 p-2 bg-blue-950 w-1/4

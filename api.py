@@ -104,8 +104,6 @@ def update_vote(response_id):
             state = False
         db.session.commit()
 
-    print(state)
-
     response = make_response(jsonify({'delta': delta, 'state': state}), 200)
     response.headers["Content-Type"] = "application/json"
     return response
@@ -113,7 +111,7 @@ def update_vote(response_id):
 
 @api.route('/update_Save_Status/<int:question_id>')
 @login_required
-def update_Save_Status(question_id):
+def update_save_status(question_id):
     question = Question.query.filter(Question.id == question_id).first_or_404()
     user = current_user
     if question in user.saved:
@@ -127,7 +125,7 @@ def update_Save_Status(question_id):
 # get questions
 @api.route('/get_questions', methods=['POST'])
 def get_questions():
-    '''get questions'''
+    '''Get questions'''
 
     # type check count
     try:
@@ -193,7 +191,7 @@ def follow_subject(subject_id):
     subject = Subject.query.filter(Subject.id == subject_id).first_or_404()
     user = current_user
 
-    # update save status
+    # update save status in db
     if subject in user.subjects:
         user.subjects.remove(subject)
     else:

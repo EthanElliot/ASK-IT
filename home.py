@@ -1,6 +1,6 @@
 '''this is the routes for the home pages'''
 from datetime import datetime
-from flask import Blueprint, render_template, redirect, url_for, abort, flash
+from flask import Blueprint, render_template, redirect, url_for, abort
 from forms import AskForm, ResponseForm
 from models import User, Subject, Question, Response
 from flask_login import current_user, login_required
