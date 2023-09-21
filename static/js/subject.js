@@ -91,7 +91,6 @@ function loadItems() {
 // Create a new IntersectionObserver instance
 var intersectionObserver = new IntersectionObserver((entries) => {
   // If intersectionRatio is 0, the sentinel is out of view
-  console.log("yes");
   // and we don't need to do anything. Exit the function
   if (entries[0].intersectionRatio <= 0) {
     return;
@@ -108,5 +107,7 @@ intersectionObserver.observe(sentinel);
 order.addEventListener("change", function () {
   counter = 0;
   scroller.innerHTML = "";
-  return;
+  sentinel.innerHTML = "<p>loading...</p>";
+
+  loadItems();
 });
