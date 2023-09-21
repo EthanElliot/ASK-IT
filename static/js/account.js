@@ -13,7 +13,10 @@ function loadItems() {
 
   // Use fetch to request data and pass the counter value in the QS
   fetch(
-    `/get_questions?count=${counter}&user_id=${user_id}&order_direction=${ord[0]}&order_by=${ord[1]}`
+    `/get_questions?count=${counter}&user_id=${user_id}&order_direction=${ord[0]}&order_by=${ord[1]}`,
+    {
+      method: "POST",
+    }
   ).then((response) => {
     // Convert the response data to JSON
     response.json().then((data) => {
@@ -80,7 +83,6 @@ function loadItems() {
 // Create a new IntersectionObserver instance
 var intersectionObserver = new IntersectionObserver((entries) => {
   // If intersectionRatio is 0, the sentinel is out of view
-  console.log("yes");
   // and we don't need to do anything. Exit the function
   if (entries[0].intersectionRatio <= 0) {
     return;

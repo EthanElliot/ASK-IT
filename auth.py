@@ -1,19 +1,19 @@
 # imports
 from flask import Blueprint, render_template, redirect, url_for,\
     flash
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask_login import login_user, logout_user, current_user, login_required
 from extentions import db
 from forms import SignInForm, SignUpForm
 from models import User
-from werkzeug.security import check_password_hash, generate_password_hash
-from flask_login import login_user, logout_user, current_user, login_required
 
 
 auth = Blueprint('auth', __name__)
 
 
-# sigin route
 @auth.route('/signin', methods=['GET', 'POST'])
 def signin():
+    '''sigin route'''
     # if user is already logged in redirect
     if current_user.is_authenticated:
         return redirect(url_for("home.home_page"))
@@ -36,9 +36,9 @@ def signin():
     return render_template("signin.html", form=form)
 
 
-# signup route
 @auth.route("/signup", methods=['GET', 'POST'])
 def signup():
+    '''sigup route'''
     # if user is already logged in redirect
     if current_user.is_authenticated:
         return redirect(url_for("home.home_page"))
@@ -48,8 +48,7 @@ def signup():
         # add user to db
         new_user = User(username=(form.username.data),
                         email=(form.email.data),
-                        password=generate_password_hash(form.password.data),
-                        verified=True)
+                        password=generate_password_hash(form.password.data))
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
@@ -61,5 +60,6 @@ def signup():
 @auth.route('/logout')
 @login_required
 def logout():
+    '''logout route'''
     logout_user()
     return redirect(url_for("home.home_page"))

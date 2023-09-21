@@ -15,10 +15,10 @@
             </p>
             {% if current_user.is_authenticated%}
             {%if liked_by_user%}
-            <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
+            <button class="p-2 px-4 bg-blue-950 text-white font-semibold max-h-12"
                 onclick="location.href='/update_Save_Status/{{question.id}}'">Unsave</button>
             {%else%}
-            <button class="p-2 px-4 bg-blue-950 text-white font-semibold"
+            <button class="p-2 px-4 bg-blue-950 text-white font-semibold max-h-12"
                 onclick="location.href='/update_Save_Status/{{question.id}}'">Save</button>
             {%endif%}
             {%endif%}
@@ -49,7 +49,9 @@
             </p>
 
         </div>
-        <div class="question_body mb-4" id="question_body"></div>
+        <p class="question_body block mb-2 w-full whitespace-normal [&>*]:whitespace-normal	max-w-[100vw] "
+            id="question_body" style="overflow-wrap: anywhere">
+        </p>
     </div>
     <div class="border-t-2">
         <p class=" text-2xl text-black font-bold mb-4">{{question.responses|length}} Responses</p>
@@ -86,7 +88,8 @@
                 </div>
 
 
-                <p class="question_body" id='question_reply_template_body'></p>
+                <p class="question_body block mb-2 w-full whitespace-normal [&>*]:whitespace-normal	max-w-[100vw] "
+                    id="question_reply_template_body" style="overflow-wrap: anywhere">
                 <div class="mt-auto">
                     <a id="question_reply_template_reply">add a reply</a>
                     <a id="question_reply_template_resonses"></a>

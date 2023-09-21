@@ -1,18 +1,15 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 
-<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2 max-md:flex max-md:flex-col-reverse h-full">
+<div class="px-2 pt-2 grid grid-cols-[auto_18rem] gap-x-2 max-md:flex max-md:flex-col-reverse h-full">
     <div>
         <div class="grid grid-cols-[auto_1fr_auto] w-full mb-6 h-8 items-center">
             <p class="text-black font-bold text-xl">Posts</p>
-            <div class="border-t-2 mx-2">
-
-            </div>
+            <div class="border-t-2 mx-2"></div>
             <div class="flex justify-center items-center">
                 <p class="text-gray-400 mr-2 items-center">Order by</p>
                 <select id="order" class="bg-neutral-100 p-1 my-auto">
-                    <option value='["asc","date"]' selected>newest</option>
-                    <option value='["desc","date"]'>oldest</option>
+                    <option value='["desc","date"]' selected>newest</option>
+                    <option value='["asc","date"]'>oldest</option>
                     <option value='["desc","viewed"]'>most viewed</option>
                     <option value='["asc","viewed"]'>least viewed</option>
                 </select>
@@ -20,76 +17,72 @@
         </div>
 
         <div>
-
             <!-- template schema, hidden from the dom -->
             <div id="scroller" class="mb-3">
                 <template id="account_question">
                     <div class="min-h-[30rem] border-b-2 mb-4">
-
-                        <p> <a id="account_question_title"
+                        <p>
+                            <a id="account_question_title"
                                 class="text-3xl tracking-wide text-black font-bold hover:cursor-pointer"></a>
                             <span id="account_question_subject" class="text-gray-400 font-medium"></span>
                         </p>
 
                         <div class="flex mb-2">
-                            <p class="text-gray-400 mr-4">Asked on <span class="text-black"
-                                    id="account_question_date_posted"></span></p>
-                            <p class="text-gray-400 mr-4">Views <span class="text-black"
-                                    id="account_question_views"></span></p>
-                            <p class="text-gray-400 mr-4">Saved by <span class="text-black"
-                                    id="account_question_saves"></span></p>
-
+                            <p class="text-gray-400 mr-4">
+                                Asked on
+                                <span class="text-black" id="account_question_date_posted"></span>
+                            </p>
+                            <p class="text-gray-400 mr-4">
+                                Views
+                                <span class="text-black" id="account_question_views"></span>
+                            </p>
+                            <p class="text-gray-400 mr-4">
+                                Saved by
+                                <span class="text-black" id="account_question_saves"></span>
+                            </p>
                         </div>
-                        <p class="question_body" id="account_question_body" class="mb-2"></p>
-
-
+                        <p class="question_body block mb-2 w-full whitespace-normal [&>*]:whitespace-normal	max-w-[100vw] "
+                            id="account_question_body" style="overflow-wrap: anywhere">
+                        </p>
                     </div>
                 </template>
             </div>
 
             <div class="flex justify-center align-middle pb-3" id="sentinel">
-
                 <p>loading...</p>
-
             </div>
         </div>
     </div>
-    <div class="relative mb-6 ">
-        <div class=" bg-neutral-100 sticky top-16 items-center pb-6 max-sm:flex-col max-md:flex max-md:pb-0 max-md:h-1/2
-          ">
-            {% if user.img%}
-            {% else %}
+    <div class="relative mb-6">
+        <div
+            class="bg-neutral-100 sticky top-16 items-center pb-6 max-sm:flex-col max-md:flex max-md:pb-0 max-md:h-1/2">
+            {% if user.img%} {% else %}
             <div class="inline-block relative">
-                <img class=" aspect-square max-md:h-full"
+                <img class="aspect-square max-md:h-full"
                     src="{{ url_for('static', filename='default_profile.svg') }}" />
             </div>
 
             {% endif%}
-            <div class="p-2 w-full ">
-
+            <div class="p-2 w-full">
                 <p class="font-medium text-xl mb-2">{{user.username}}</p>
 
-
-                <div class="flex m-2 max-md:block ">
+                <div class="flex m-2 max-md:block">
                     <div class="w-1/2">
                         <span class="text-neutral-300">Questions</span>
                         {{user.questions| length }}
                     </div>
                     <div class="w-1/2">
-                        <span class="text-neutral-300">Responces</span>
+                        <span class="text-neutral-300">Responses</span>
                         {{user.responses| length }}
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
 </div>
 
-
 <script>
-    var user_id = "{{user.id}}"
+    var user_id = "{{user.id}}";
 </script>
 
 <script src="/static/js/account.js"></script>

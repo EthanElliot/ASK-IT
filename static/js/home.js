@@ -15,7 +15,10 @@ function loadItems() {
 
   // Use fetch to request data and pass the counter value in the QS
   fetch(
-    `/get_questions?count=${counter}&order_direction=${o[0]}&order_by=${o[1]}&filter=${f}`
+    `/get_questions?count=${counter}&order_direction=${o[0]}&order_by=${o[1]}&filter=${f}`,
+    {
+      method: "POST",
+    }
   ).then((response) => {
     // Convert the response data to JSON
     response.json().then((data) => {
@@ -43,7 +46,7 @@ function loadItems() {
 
         template_clone
           .querySelector("#question_title")
-          .setAttribute("href", `/q/${data[0].id}`);
+          .setAttribute("href", `/q/${data[i].id}`);
 
         template_clone.querySelector(
           "#question_user"
@@ -116,16 +119,15 @@ order.addEventListener("change", function () {
   return;
 });
 
-filter_search.addEventListener("keydown", function handleKeydown(event) {
+function handleFilter(ele) {
   if (event.key === "Enter") {
-    event.preventDefault(); // Prevent the default Enter key behavior
     counter = 0;
     scroller.innerHTML = "";
     sentinel.innerHTML = "<p>loading...</p>";
-    console.log("enter");
+    loadItems();
     return;
   }
-});
+}
 
 // Instruct the IntersectionObserver to watch the sentinel
 intersectionObserver.observe(sentinel);

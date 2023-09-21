@@ -2,7 +2,7 @@
 {% block content %}
 
 
-<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2 z-1  max-md:flex max-md:flex-col-reverse h-full">
+<div class=" px-2 pt-2 grid grid-cols-[auto_18rem] gap-x-2 z-1  max-md:flex max-md:flex-col-reverse h-full">
     <!-- nav for home -->
     <div>
         <div class="grid grid-cols-[auto_1fr_auto] w-full mb-6 h-8 items-center">
@@ -13,8 +13,8 @@
             <div class="flex justify-center items-center">
                 <p class="text-gray-400 mr-2 items-center">Order by</p>
                 <select id="order" class="bg-neutral-100 p-1 my-auto">
-                    <option value='["asc","date"]' selected>newest</option>
-                    <option value='["desc","date"]'>oldest</option>
+                    <option value='["desc","date"]' selected>newest</option>
+                    <option value='["asc","date"]'>oldest</option>
                     <option value='["desc","viewed"]'>most viewed</option>
                     <option value='["asc","viewed"]'>least viewed</option>
                 </select>
@@ -44,7 +44,9 @@
                             </p>
 
                         </div>
-                        <p class="question_body" id="question_body" class="mb-2"></p>
+                        <p class="question_body block mb-2 w-full whitespace-normal [&>*]:whitespace-normal	max-w-[100vw] "
+                            id="question_body" style="overflow-wrap: anywhere">
+                        </p>
 
 
                     </div>

@@ -15,6 +15,9 @@ api = Blueprint('api', __name__)
 # route for get responses
 @api.route('/get_responses/<int:question_id>', methods=['POST'])
 def get_responses(question_id):
+
+    if not request.data:
+        abort(400)
     # get data send from request
     request_data = json.loads(request.data)
 
@@ -59,6 +62,8 @@ def get_responses(question_id):
 @api.route('/update_vote/<int:response_id>', methods=['POST'])
 @login_required
 def update_vote(response_id):
+    if not request.data:
+        abort(400)
     request_data = json.loads(request.data)
 
     vote = Vote.query.filter(
@@ -116,35 +121,38 @@ def update_Save_Status(question_id):
     else:
         user.saved.append(question)
     db.session.commit()
-    return redirect(url_for('home.question', id=question_id))
+    return redirect(url_for('home.question', question_id=question_id))
 
 
 # get questions
-@api.route('/get_questions')
+@api.route('/get_questions', methods=['POST'])
 def get_questions():
-    # get args
-    if not request.args:
-        abort(404)
+    '''get questions'''
 
-    # get data from request
+    # type check count
+    try:
+        counter = int(request.args.get("count"))
+    except ValueError:
+        abort(400)
+
     user_id = request.args.get("user_id")
-    counter = int(request.args.get("count"))
+    subject_id = request.args.get("subject_id")
+    filter = request.args.get("filter")
 
     order_direction = request.args.get("order_direction")
     order_by = request.args.get("order_by")
 
-    filter = request.args.get("filter")
-    subject_id = request.args.get("subject_id")
-
     # set order by
     if order_by == 'date' and order_direction == 'desc':
         order = desc(Question.date_posted)
-    if order_by == 'date' and order_direction == 'asc':
+    elif order_by == 'date' and order_direction == 'asc':
         order = asc(Question.date_posted)
-    if order_by == 'viewed' and order_direction == 'desc':
+    elif order_by == 'viewed' and order_direction == 'desc':
         order = desc(Question.views)
-    if order_by == 'viewed' and order_direction == 'asc':
+    elif order_by == 'viewed' and order_direction == 'asc':
         order = asc(Question.views)
+    else:
+        abort(400)
 
     # do query
     query: Question = Question.query.order_by(order)
@@ -191,4 +199,4 @@ def follow_subject(subject_id):
     else:
         user.subjects.append(subject)
     db.session.commit()
-    return redirect(url_for('home.subject', subject=subject.name))
+    return redirect(url_for('home.subject', subject_name=subject.name))

@@ -1,14 +1,15 @@
+'''this is the app file to init modules and run app'''
 # imports
 from flask import Flask, render_template, abort
-from extentions import db, login_manager
-from models import Subject, Question, Response, User, Vote
 from flask_login import current_user
-from home import home
-from auth import auth
-from api import api
 from werkzeug.exceptions import HTTPException
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
+from extentions import db, login_manager
+from home import home
+from auth import auth
+from api import api
+from models import Subject, Question, Response, User, Vote
 
 
 # FLASK APP
@@ -25,8 +26,9 @@ app.register_blueprint(auth)
 app.register_blueprint(api)
 
 
-# init admin and make it hidden to non admin users
 class MyAdminIndexView(AdminIndexView):
+    '''init admin index and make it hidden to non admin users'''
+
     def is_accessible(self):
         return current_user.is_authenticated and current_user.admin
 
@@ -40,6 +42,8 @@ class MyAdminIndexView(AdminIndexView):
 
 
 class AdminModelView(ModelView):
+    '''init admin models and make it hidden to non admin users'''
+
     def is_accessible(self):
         if current_user.is_authenticated and current_user.admin:
             return True
@@ -53,12 +57,11 @@ admin.add_view(AdminModelView(Question, db.session))
 admin.add_view(AdminModelView(Response, db.session))
 admin.add_view(AdminModelView(Subject, db.session))
 admin.add_view(AdminModelView(Vote, db.session))
-admin.add_view(AdminModelView(Question, db.session))
 
 
-# general error handeler
 @app.errorhandler(HTTPException)
 def handle_exception(e):
+    '''general error handeler for HTTP errors only'''
     # generate response
     response = {
         "code": e.code,

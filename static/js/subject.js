@@ -13,7 +13,10 @@ function loadItems() {
 
   // Use fetch to request data and pass the counter value in the QS
   fetch(
-    `/get_questions?count=${counter}&order_direction=${o[0]}&order_by=${o[1]}&subject_id=${subject_id}`
+    `/get_questions?count=${counter}&order_direction=${o[0]}&order_by=${o[1]}&subject_id=${subject_id}`,
+    {
+      method: "POST",
+    }
   ).then((response) => {
     // Convert the response data to JSON
     response.json().then((data) => {

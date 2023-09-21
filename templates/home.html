@@ -2,31 +2,31 @@
 {% block content %}
 
 
-<div class=" mx-2 mt-2 grid grid-cols-[auto_18rem] gap-x-2  max-md:flex max-md:flex-col-reverse h-full">
+<div class="px-2 pt-2 grid grid-cols-[auto_18rem] gap-x-2  max-md:flex max-md:flex-col-reverse h-full w-full">
     <!-- nav for home -->
-    <div>
+    <div class="w-full">
         <div class="grid grid-cols-[auto_1fr_auto] w-full mb-6 h-8 items-center">
             <p class="text-black font-bold text-xl">Posts</p>
-            <div class="border-t-2 mx-2">
+            <div class="border-t-2 mx-2 w-full">
 
             </div>
             <div class="flex justify-center items-center">
                 <p class="text-gray-400 mr-2 items-center">Order by</p>
                 <select id="order" class="bg-neutral-100 p-1 my-auto">
-                    <option value='["asc","date"]' selected>newest</option>
-                    <option value='["desc","date"]'>oldest</option>
+                    <option value='["desc","date"]' selected>newest</option>
+                    <option value='["asc","date"]'>oldest</option>
                     <option value='["desc","viewed"]'>most viewed</option>
                     <option value='["asc","viewed"]'>least viewed</option>
                 </select>
             </div>
         </div>
 
-        <div>
+        <div class="w-full">
 
             <!-- template schema, hidden from the dom -->
             <div id="scroller" class="mb-3">
                 <template id="question">
-                    <div class="min-h-[30rem] border-b-2 mb-4">
+                    <div class="min-h-[30rem] border-b-2 mb-4 w-full">
 
                         <p> <a id="question_title"
                                 class="text-3xl tracking-wide text-black font-bold hover:cursor-pointer"></a>
@@ -44,7 +44,10 @@
                             </p>
 
                         </div>
-                        <p class="question_body" id="question_body" class="mb-2"></p>
+                        <p class="question_body block mb-2 w-full whitespace-normal [&>*]:whitespace-normal	max-w-[100vw] "
+                            id="question_body" style="overflow-wrap: anywhere">
+                        </p>
+                        </p>
 
 
                     </div>
@@ -67,7 +70,8 @@
             <p class="text-black font-bold text-xl h-8  ">Filter by keyword</p>
             <div class="w-full flex items-center h-8 mb-4">
                 <span class="material-symbols-outlined absolute ml-2 text-gray-400 ">search</span>
-                <input class="w-full h-full pl-10 focus:outline-0" type="search" name="" id="filter_search">
+                <input class="w-full h-full pl-10 focus:outline-0" type="search" name="" id="filter_search"
+                    class="search" onkeydown="handleFilter(this)">
             </div>
 
 
@@ -79,7 +83,7 @@
                     <p class="text-gray-400">Your subjects</p>
                     {%for subject in subjects%}
                     {%if subject in current_user.subjects%}
-                    <a class="inline-block" href='/s/{{subject.name}}'>{{subject.name}}</a>
+                    <a class="inline-block bg-white p-0.25 mb-0.5" href='/s/{{subject.name}}'>{{subject.name}}</a>
                     {%endif%}
                     {%endfor%}
                 </div>
@@ -98,11 +102,11 @@
                     {%for subject in subjects%}
                     {%if current_user.is_authenticated%}
                     {%if subject not in current_user.subjects%}
-                    <a class="inline-block" href='/s/{{subject.name}}'>{{subject.name}}</a>
+                    <a class="inline-block bg-white p-0.25 mb-0.5" href='/s/{{subject.name}}'>{{subject.name}}</a>
                     {%endif%}
 
                     {%else%}
-                    <a class="inline-block" href='/s/{{subject.name}}'>{{subject.name}}</a>
+                    <a class="inline-block bg-white p-0.25 mb-0.5" href='/s/{{subject.name}}'>{{subject.name}}</a>
                     {%endif%}
                     {%endfor%}
                 </div>
