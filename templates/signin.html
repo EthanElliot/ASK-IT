@@ -19,7 +19,7 @@
             </div>
 
             <p class=" text-2xl tracking-wide text-black font-bold mb-4">SIGN IN</p>
-
+            {# form errors, both due to multiple ways an error can be handled and retured to the user #}
             {% for field in form.errors %}
             {% for error in form.errors[field] %}
             <div class="my-2">
@@ -33,6 +33,8 @@
                 <strong>Error!</strong> {{message}}
             </div>
             {% endfor %}
+
+            {# form #}
             <div class="flex flex-col ">
                 {{ form.csrf_token }}
                 {{ form.identifier(class='br-400 bg-neutral-100 p-2 mb-2') }}
