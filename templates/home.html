@@ -10,6 +10,7 @@
             <div class="border-t-2 mx-2 w-full">
 
             </div>
+            {# filters #}
             <div class="flex justify-center items-center">
                 <p class="text-gray-400 mr-2 items-center">Order by</p>
                 <select id="order" class="bg-neutral-100 p-1 my-auto">
@@ -75,8 +76,10 @@
             </div>
 
 
+
             <p class="text-black font-bold text-xl">Subjects</p>
             <div>
+                {# subjects #}
                 {%if current_user.is_authenticated%}
                 {%if current_user.subjects%}
                 <div class="mb-2">

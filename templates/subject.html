@@ -10,6 +10,8 @@
             <div class="border-t-2 mx-2">
 
             </div>
+
+            {# filters #}
             <div class="flex justify-center items-center">
                 <p class="text-gray-400 mr-2 items-center">Order by</p>
                 <select id="order" class="bg-neutral-100 p-1 my-auto">
@@ -67,6 +69,7 @@
     <div class="relative mb-6">
         <div class=" bg-neutral-100 sticky top-16 items-center px-2 pb-6">
 
+            {# following subject #}
             <p class="text-black font-bold text-xl h-8 ">{{subject.name}} {%if current_user.is_authenticated%} {%if
                 subject in current_user.subjects%} <span
                     class="text-gray-400 mr-2 font-normal text-base mb-4">following</span> {%endif%} {%endif%}</p>

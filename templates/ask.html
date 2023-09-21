@@ -11,6 +11,7 @@
     <p class=" text-2xl tracking-wide text-black font-bold mb-4">NEW QUESTION</p>
 
 
+    {# form errors #}
     {% for field in form.errors %}
     {% for error in form.errors[field] %}
     <div class="alert alert-error">
@@ -28,7 +29,7 @@
 
 
 
-
+    {# form #}
     {{ form.csrf_token }}
     <p class="text-gray-400 "> <span class="text-black">Title.</span> Give your post a title; a brief descrition of
         theproblem you have.</p>

@@ -19,7 +19,7 @@
 
             <p class=" text-2xl tracking-wide text-black font-bold mb-4">SIGN UP</p>
 
-
+            {# form errors #}
             {% for field in form.errors %}
             {% for error in form.errors[field] %}
             <div class="alert alert-error">
@@ -28,6 +28,7 @@
             {% endfor %}
             {% endfor %}
 
+            {# form #}
             {{ form.csrf_token }}
             {{ form.username(class='br-400 bg-neutral-100 p-2 mb-2') }}
             {{ form.email(class='br-400 bg-neutral-100 p-2 mb-2') }}
